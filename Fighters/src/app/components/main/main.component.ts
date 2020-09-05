@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 
 @Component({
-	selector: 'main',
+	selector: 'main-component',
 	templateUrl: 'main.component.html'
 })
 
 export class MainComponent {
+	constructor() {
+		console.log('in main');
+	}
 
 }

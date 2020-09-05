@@ -6,8 +6,5 @@ import { Component } from '@angular/core';
 })
 
 export class MainComponent {
-	constructor() {
-		console.log('in main');
-	}
 
 }

@@ -14,8 +14,8 @@ export class UserSettingsComponent {
 	) {
 		this.userSettingsFormGroup = this.fb.group({
 			displayName: ['', Validators.required],
-			email: ['', Validators.required],
-			bio: [''],
+			email: ['', [Validators.required, Validators.email]],
+			bio: ['', Validators.maxLength(250)],
 			password: this.fb.group({
 				currentPassword: [''],
 				newPassword: [''],

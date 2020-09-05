@@ -19,7 +19,7 @@ export class UserSettingsComponent {
 			password: this.fb.group({
 				currentPassword: [''],
 				newPassword: [''],
-				newPasswordConfirmed: ['']
+				newPasswordConfirmed: [''],
 			}),
 		});
 	}

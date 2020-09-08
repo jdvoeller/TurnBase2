@@ -6,8 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { UserSettingsComponent } from './userSettings.component';
+import { PasswordChangeDialogModule } from './passwordChangeDialog/passwordChangeDialog.module';
+import { PasswordChangeDialogComponent } from './passwordChangeDialog/passwordChangeDialog.component';
 
 @NgModule({
 	imports: [
@@ -18,8 +21,12 @@ import { UserSettingsComponent } from './userSettings.component';
 		MatFormFieldModule,
 		ReactiveFormsModule,
 		MatDividerModule,
+		MatDialogModule,
+
+		PasswordChangeDialogModule,
 	],
 	exports: [UserSettingsComponent],
 	declarations: [UserSettingsComponent],
+	entryComponents: [PasswordChangeDialogComponent],
 })
 export class UserSettingsModule { }

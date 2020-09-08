@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+
+import { PasswordChangeDialogComponent } from './passwordChangeDialog/passwordChangeDialog.component';
 
 @Component({
 	selector: 'user-settings',
@@ -11,17 +14,16 @@ export class UserSettingsComponent {
 	public userSettingsFormGroup: FormGroup;
 	constructor(
 		private fb: FormBuilder,
+		private dialog: MatDialog,
 	) {
 		this.userSettingsFormGroup = this.fb.group({
 			displayName: ['', Validators.required],
 			email: ['', [Validators.required, Validators.email]],
 			bio: ['', Validators.maxLength(250)],
-			password: this.fb.group({
-				currentPassword: [''],
-				newPassword: [''],
-				newPasswordConfirmed: [''],
-			}),
 		});
 	}
 
+	public openPasswordChangeDialog() {
+		this.dialog.open(PasswordChangeDialogComponent);
+	}
 }

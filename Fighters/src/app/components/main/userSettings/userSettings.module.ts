@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { UserSettingsComponent } from './userSettings.component';
 import { PasswordChangeDialogModule } from './passwordChangeDialog/passwordChangeDialog.module';
 import { PasswordChangeDialogComponent } from './passwordChangeDialog/passwordChangeDialog.component';
+import { CancelAndSubmitModule } from '../../commonComponents/cancelAndSubmit/cancelAndSubmit.module';
 
 @NgModule({
 	imports: [
@@ -24,6 +25,7 @@ import { PasswordChangeDialogComponent } from './passwordChangeDialog/passwordCh
 		MatDialogModule,
 
 		PasswordChangeDialogModule,
+		CancelAndSubmitModule,
 	],
 	exports: [UserSettingsComponent],
 	declarations: [UserSettingsComponent],

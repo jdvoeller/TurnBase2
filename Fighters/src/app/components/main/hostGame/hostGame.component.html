@@ -1,0 +1,27 @@
+<div class="card-container card-top-margin">
+	<mat-card class="card">
+		<div class="title-container">
+			<div class="card-title">Create a New Game</div>
+			<div class="card-sub-title">Give room name and password to opponent</div>
+		</div>
+		<form [formGroup]="roomSetupForm" class="form">
+			<mat-form-field appearance="outline">
+				<mat-label>Room name</mat-label>
+				<input matInput placeholder="Room name"
+				required formControlName="roomName">
+				<mat-error *ngIf="roomSetupForm.get('roomName').errors?.required">
+					Room name is required
+				</mat-error>
+			</mat-form-field>
+			<mat-form-field appearance="outline">
+				<mat-label>Password</mat-label>
+				<input matInput placeholder="Password"
+				required formControlName="password">
+				<mat-error *ngIf="roomSetupForm.get('password').errors?.required">
+					Password is required
+				</mat-error>
+			</mat-form-field>
+		</form>
+		<cancel-and-submit></cancel-and-submit>
+	</mat-card>
+</div>

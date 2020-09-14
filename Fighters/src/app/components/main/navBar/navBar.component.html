@@ -1,11 +1,11 @@
 <mat-toolbar color="primary" class="content-container">
 	<div class="menu-container">
 		<button mat-icon-button [matMenuTriggerFor]="menu">
-			<mat-icon>menu</mat-icon>
+			<mat-icon>play_circle_filled</mat-icon>
 		</button>
 		<mat-menu #menu="matMenu">
-			<button mat-menu-item>Host Game</button>
-			<button mat-menu-item>Join Game</button>
+			<button mat-menu-item (click)="navToHostGame()">Host Game</button>
+			<button mat-menu-item (click)="navToJoinGame()">Join Game</button>
 		</mat-menu>
 	</div>
 	<img src="../../../../assets/imgs/logo.png" class="logo">
@@ -14,7 +14,7 @@
 			<mat-icon>account_circle</mat-icon>
 		</button>
 		<mat-menu #account="matMenu">
-			<button mat-menu-item>Settings</button>
+			<button mat-menu-item (click)="navToUserSettings()">Settings</button>
 			<button mat-menu-item>Logout</button>
 		</mat-menu>
 	</div>

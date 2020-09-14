@@ -3,3 +3,7 @@
 body {
 	margin: 0;
 }
+
+.card-top-margin {
+	margin-top: 24px;
+}

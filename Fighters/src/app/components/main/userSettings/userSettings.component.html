@@ -1,34 +1,38 @@
-<mat-card class="card">
-	<div>USER SETTINGS</div>
-	<form [formGroup]="userSettingsFormGroup" class="form">
-		<mat-form-field appearance="outline">
-			<mat-label>Display Name</mat-label>
-			<input matInput placeholder="Display name"
-			required formControlName="displayName">
-			<mat-error *ngIf="userSettingsFormGroup.get('displayName').errors?.required">
-				Display Name is required
-			</mat-error>
-		</mat-form-field>
-		<mat-form-field appearance="outline">
-			<mat-label>Email</mat-label>
-			<input matInput placeholder="Email" required
-				formControlName="email">
-			<mat-error *ngIf="userSettingsFormGroup.get('email').errors?.required">
-				Email is required
-			</mat-error>
-			<mat-error *ngIf="userSettingsFormGroup.get('email').errors?.email">
-				Email is not valid
-			</mat-error>
-		</mat-form-field>
-		<mat-form-field appearance="outline">
-			<mat-label>Bio</mat-label>
-			<input matInput placeholder="Bio"
-				formControlName="bio">
-			<mat-error *ngIf="userSettingsFormGroup.get('bio').errors?.maxlength">
-				Max length of 250 exceeded
-			</mat-error>
-		</mat-form-field>
-	</form>
-	<button mat-button color="primary"
-		(click)="openPasswordChangeDialog()">Change Password</button>
-</mat-card>
+<div class="card-container card-top-margin">
+	<mat-card class="card">
+		<div>USER SETTINGS</div>
+		<form [formGroup]="userSettingsFormGroup" class="form">
+			<mat-form-field appearance="outline">
+				<mat-label>Display Name</mat-label>
+				<input matInput placeholder="Display name"
+				required formControlName="displayName">
+				<mat-error *ngIf="userSettingsFormGroup.get('displayName').errors?.required">
+					Display Name is required
+				</mat-error>
+			</mat-form-field>
+			<mat-form-field appearance="outline">
+				<mat-label>Email</mat-label>
+				<input matInput placeholder="Email" required
+					formControlName="email">
+				<mat-error *ngIf="userSettingsFormGroup.get('email').errors?.required">
+					Email is required
+				</mat-error>
+				<mat-error *ngIf="userSettingsFormGroup.get('email').errors?.email">
+					Email is not valid
+				</mat-error>
+			</mat-form-field>
+			<mat-form-field appearance="outline">
+				<mat-label>Bio</mat-label>
+				<input matInput placeholder="Bio"
+					formControlName="bio">
+				<mat-error *ngIf="userSettingsFormGroup.get('bio').errors?.maxlength">
+					Max length of 250 exceeded
+				</mat-error>
+			</mat-form-field>
+		</form>
+		<button mat-button color="primary"
+			(click)="openPasswordChangeDialog()"
+			class="password">Change Password</button>
+		<cancel-and-submit></cancel-and-submit>
+	</mat-card>
+</div>

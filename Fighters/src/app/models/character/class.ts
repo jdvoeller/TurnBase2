@@ -2,7 +2,7 @@ export enum Class {
 	Warrior = 'Warrior',
 	Rogue = 'Rogue',
 	Paladin = 'Paladin',
-	Huinter = 'Huinter',
+	Hunter = 'Hunter',
 	Shaman = 'Shaman',
 	Druid = 'Druid',
 	Mage = 'Mage',

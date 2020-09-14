@@ -3,8 +3,19 @@
 	flex-direction: column;
 	align-items: center;
 }
+
+.card-container {
+	display: flex;
+	justify-content: center;
+}
+
 .card {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	max-width: 280px;
+}
+
+.password {
+	margin-bottom: 18px;
 }

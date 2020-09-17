@@ -33,6 +33,9 @@
 		<button mat-button color="primary"
 			(click)="openPasswordChangeDialog()"
 			class="password">Change Password</button>
-		<cancel-and-submit></cancel-and-submit>
+		<div class="button-container">
+			<button mat-button (click)="cancel()">Cancel</button>
+			<button mat-raised-button color="primary" (click)="submitFunction()">Submit</button>
+		</div>
 	</mat-card>
 </div>

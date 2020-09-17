@@ -128,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "Fighters"
+  "defaultProject": "Fighters",
+  "cli": {
+    "analytics": false
+  }
 }

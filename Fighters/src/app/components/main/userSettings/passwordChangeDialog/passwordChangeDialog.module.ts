@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { PasswordChangeDialogComponent } from './passwordChangeDialog.component';
-import { CancelAndSubmitModule } from 'src/app/components/commonComponents/cancelAndSubmit/cancelAndSubmit.module';
 
 @NgModule({
 	imports: [
@@ -17,8 +16,6 @@ import { CancelAndSubmitModule } from 'src/app/components/commonComponents/cance
 		MatFormFieldModule,
 		MatInputModule,
 		MatButtonModule,
-
-		CancelAndSubmitModule,
 	],
 	exports: [PasswordChangeDialogComponent],
 	declarations: [PasswordChangeDialogComponent],

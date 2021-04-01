@@ -5,9 +5,10 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 
-import { CancelAndSubmitModule } from '../../commonComponents/cancelAndSubmit/cancelAndSubmit.module';
 import { JoinGameComponent } from './joinGame.component';
+import { MatIconModule } from '@angular/material';
 
 @NgModule({
 	imports: [
@@ -17,8 +18,8 @@ import { JoinGameComponent } from './joinGame.component';
 		MatFormFieldModule,
 		ReactiveFormsModule,
 		MatButtonModule,
-
-		CancelAndSubmitModule,
+		MatTableModule,
+		MatIconModule,
 	],
 	exports: [JoinGameComponent],
 	declarations: [JoinGameComponent],

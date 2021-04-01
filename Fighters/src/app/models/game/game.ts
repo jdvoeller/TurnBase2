@@ -1,10 +1,10 @@
-import { IPublicPlayer } from '../player';
+// import { IPublicPlayer } from '../player';
 
 export interface IGame {
 	password: string;
+	roomName: string;
+	active: boolean;
 	hostName: string;
-	started: boolean;
-	completed: boolean;
-	players: IPublicPlayer[];
-	id: number;
+	// TODO: bring this in when you have auth setup
+	// players: IPublicPlayer[];
 }

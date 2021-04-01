@@ -4,7 +4,5 @@ import { Component } from '@angular/core';
 	selector: 'main-component',
 	templateUrl: 'main.component.html'
 })
-
 export class MainComponent {
-
 }

@@ -7,7 +7,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 
 import { HostGameComponent } from './hostGame.component';
-import { CancelAndSubmitModule } from '../../commonComponents/cancelAndSubmit/cancelAndSubmit.module';
 
 @NgModule({
 	imports: [
@@ -17,8 +16,6 @@ import { CancelAndSubmitModule } from '../../commonComponents/cancelAndSubmit/ca
 		MatFormFieldModule,
 		ReactiveFormsModule,
 		MatButtonModule,
-
-		CancelAndSubmitModule,
 	],
 	exports: [HostGameComponent],
 	declarations: [HostGameComponent],

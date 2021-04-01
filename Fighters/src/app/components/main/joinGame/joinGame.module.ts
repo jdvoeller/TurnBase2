@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 
 import { JoinGameComponent } from './joinGame.component';
+import { MatIconModule } from '@angular/material';
 
 @NgModule({
 	imports: [
@@ -18,6 +19,7 @@ import { JoinGameComponent } from './joinGame.component';
 		ReactiveFormsModule,
 		MatButtonModule,
 		MatTableModule,
+		MatIconModule,
 	],
 	exports: [JoinGameComponent],
 	declarations: [JoinGameComponent],

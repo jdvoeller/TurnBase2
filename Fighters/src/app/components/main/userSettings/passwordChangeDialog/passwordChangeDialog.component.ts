@@ -20,4 +20,8 @@ export class PasswordChangeDialogComponent {
 			newPasswordConfirm: ['', Validators.required],
 		});
 	}
+
+	public cancel() {
+		this.dialogRef.close();
+	}
 }

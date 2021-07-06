@@ -1,0 +1,55 @@
+<h1 mat-dialog-title>Create or Join a Game</h1>
+<div mat-dialog-content>
+	<div *ngIf="!createMatch && !joinMatch" 
+		class="create-join">
+		<button mat-raised-button 
+			color="primary"
+			(click)="create(true)">Create</button>
+		<button mat-raised-button 
+			color="primary"
+			(click)="create(false)">Join</button>
+	</div>
+	<div *ngIf="createMatch || joinMatch">
+		<form [formGroup]="form">
+			<mat-form-field>
+				<mat-label>Name</mat-label>
+				<input matInput
+					required
+					formControlName="name">
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Win phrase</mat-label>
+				<input matInput
+					formControlName="winTag">
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Loss phrase</mat-label>
+				<input matInput
+					formControlName="lossTag">
+			</mat-form-field>
+			<div *ngIf="!createMatch && joinMatch">
+				<mat-form-field class="game-id">
+					<mat-label>Game ID</mat-label>
+					<input matInput
+						required
+						formControlName="gameId">
+				</mat-form-field>
+			</div>
+		</form>
+	</div>
+
+	<div *ngIf="createMatch || joinMatch"
+		class="button-container">
+		<button mat-mini-fab
+			color="primary"
+			class="undo-button"
+			(click)="revert()">
+			<mat-icon>undo</mat-icon>
+		</button>
+		<button mat-mini-fab
+			color="primary"
+			(click)="setupGame()">
+			<mat-icon>play_circle</mat-icon>
+		</button>
+	</div>
+</div>

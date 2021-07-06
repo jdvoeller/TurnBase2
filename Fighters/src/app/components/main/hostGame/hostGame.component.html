@@ -29,6 +29,17 @@
 					Password is required
 				</mat-error>
 			</mat-form-field>
+			<mat-form-field appearance="outline">
+				<mat-label>Confirm password</mat-label>
+				<input matInput placeholder="Confirm password"
+					required formControlName="confirmPassword">
+				<mat-error *ngIf="roomSetupForm.get('confirmPassword').errors?.required">
+					Please confirm password
+				</mat-error>
+				<mat-error *ngIf="roomSetupForm.get('confirmPassword').errors?.passwordsDoNotMatch">
+					Passwords do not match
+				</mat-error>
+			</mat-form-field>
 		</form>
 		<div class="button-container">
 			<button mat-button (click)="cancel()">Cancel</button>

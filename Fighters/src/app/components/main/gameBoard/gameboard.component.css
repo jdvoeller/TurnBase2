@@ -1,0 +1,53 @@
+mat-card {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+button {
+	font-size: large;
+}
+
+.game-details {
+	height: 100px;
+	border-top: 1px solid gray;
+	background-color: honeydew;
+	overflow: scroll;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.date-container {
+	padding: 0 8px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	border-bottom: rgb(198, 209, 198) 1px inset;
+}
+
+.time {
+	color: gray;
+	font-size: small;
+}
+
+.id-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	padding-bottom: 8px;
+}
+
+.id-container span {
+	background-color: lightsteelblue;
+	padding: 4px;
+}
+
+.start-game {
+	display: flex;
+	justify-content: center;
+	padding-bottom: 16px;
+}

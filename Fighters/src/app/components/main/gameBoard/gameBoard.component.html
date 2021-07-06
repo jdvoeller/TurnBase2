@@ -1,0 +1,34 @@
+<div class="game-winodw">
+	<div *ngIf="id && (game && !game.gameStarted)"
+		class="id-container">
+		<div>Give this ID to your friend:</div>
+		<span id="idText">{{id}}</span>
+	</div>
+	<div *ngIf="showStartGameButton"
+		class="start-game">
+		<button mat-raised-button
+			color="primary"
+			(click)="showStartDialog()">Start Game</button>
+	</div>
+</div>
+
+<div class="bottom container">
+	<div class="game-details" id="game-details">
+		<ng-container *ngFor="let detail of details">
+			<div class="date-container">
+				<span>{{ detail.message }}</span>
+				<span class="time">{{ detail.time.toDate() | date:'shortTime' }}</span>
+			</div>
+		</ng-container>
+	</div>
+	
+	<mat-card>
+		<button mat-raised-button color="primary">Attack</button>
+		<button mat-mini-fab
+			color="primary"
+			(click)="openMessageDialog()">
+			<mat-icon>message</mat-icon>
+		</button>
+		<button mat-raised-button color="primary">Block</button>
+	</mat-card>
+</div>

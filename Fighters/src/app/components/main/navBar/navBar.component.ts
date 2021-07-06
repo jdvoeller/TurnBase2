@@ -22,4 +22,8 @@ export class NavBarComponent {
 	public navToJoinGame() {
 		this.router.navigateByUrl('joinGame');
 	}
+
+	public testGame() {
+		this.router.navigateByUrl('testGame');
+	}
 }

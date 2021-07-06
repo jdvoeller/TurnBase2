@@ -16,14 +16,26 @@ export class UserSettingsComponent {
 		private fb: FormBuilder,
 		private dialog: MatDialog,
 	) {
-		this.userSettingsFormGroup = this.fb.group({
-			displayName: ['', Validators.required],
-			email: ['', [Validators.required, Validators.email]],
-			bio: ['', Validators.maxLength(250)],
-		});
+		this.userSettingsFormGroup = this.setForm();
 	}
 
 	public openPasswordChangeDialog() {
 		this.dialog.open(PasswordChangeDialogComponent);
+	}
+
+	public cancel() {
+		this.userSettingsFormGroup = this.setForm();
+	}
+
+	public save() {
+		
+	}
+
+	private setForm(): FormGroup {
+		return this.fb.group({
+			displayName: ['', Validators.required],
+			email: ['', [Validators.required, Validators.email]],
+			bio: ['', Validators.maxLength(250)],
+		});
 	}
 }

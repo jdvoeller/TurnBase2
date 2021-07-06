@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { NavBarComponent } from './navBar.component';
 import { HostGameModule } from '../hostGame/hostGame.module';
 import { JoinGameModule } from '../joinGame/joinGame.module';
+import { TestGameModule } from '../testGame/testGame.module';
 
 @NgModule({
 	imports: [
@@ -17,6 +18,7 @@ import { JoinGameModule } from '../joinGame/joinGame.module';
 
 		HostGameModule,
 		JoinGameModule,
+		TestGameModule,
 	],
 	exports: [NavBarComponent],
 	declarations: [NavBarComponent],

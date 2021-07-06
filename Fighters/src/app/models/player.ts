@@ -1,11 +1,19 @@
-export interface IPublicPlayer {
+export interface IPlayer {
 	name: string;
-	profilePicURL: string;
-	wins: number;
-	losses: number;
+	winTag: string;
+	lossTag: string;
+	id: string;
+	// profilePicURL: string;
+	// wins: number;
+	// losses: number;
 }
 
-export interface IPrivatePlayer extends IPublicPlayer {
-	id: string;
-	email: string;
+export interface IPlayingPlayer {
+	player: IPlayer;
+	attackDamage: number;
+	magicDamage: number;
+	magicResist: number;
+	armorResist: number;
+	dead: boolean;
+	health: number;
 }

@@ -8,6 +8,7 @@ import { IPlayer, IPlayingPlayer } from '../models/player';
 export interface IPersonalPlayerDetails {
 	player: IPlayer;
 	gameId: string;
+	player1: boolean;
 }
 
 @Injectable()
@@ -40,6 +41,7 @@ export class GameService {
 			const gameObj: IPersonalPlayerDetails = {
 				player: newGame.players[0].player,
 				gameId: id,
+				player1: true,
 			};
 			return gameObj;
 		});
@@ -70,6 +72,7 @@ export class GameService {
 				const playerObj: IPersonalPlayerDetails = {
 					gameId: id,
 					player: updatedPlayer,
+					player1: false,
 				};
 
 				return playerObj;

@@ -53,6 +53,7 @@ export class PlayerDialogComponent {
 						id: '',
 					},
 					gameId: this.form.get('gameId').value,
+					player1: false,
 				};
 
 				this.gameService.joinGame(game.id, game, joinDetails).then((details: any) => {

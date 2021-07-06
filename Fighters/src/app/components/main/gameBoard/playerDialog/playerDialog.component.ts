@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { IGame } from 'src/app/models/game/game';
-import { GameService } from 'src/app/services/gameService.service';
+import { GameService, IPersonalPlayerDetails } from '../../../../services/gameService.service';
 
 @Component({
 	selector: 'player-dialog',
@@ -45,9 +45,18 @@ export class PlayerDialogComponent {
 		} else if (this.joinMatch) {
 			this.gameService.getGame(this.form.get('gameId').value).then((data: any) => {
 				const game: IGame = this.gameService.formatGameData(data.kf.nn.proto.mapValue.fields);
-				this.gameService.joinGame(game.id, game, this.form.value).then((poop: any) => {
-					console.log(poop);
-					this.dialogRef.close(poop);
+				const joinDetails: IPersonalPlayerDetails = {
+					player: {
+						name: this.form.get('name').value,
+						winTag: this.form.get('winTag').value,
+						lossTag: this.form.get('lossTag').value,
+						id: '',
+					},
+					gameId: this.form.get('gameId').value,
+				};
+
+				this.gameService.joinGame(game.id, game, joinDetails).then((details: any) => {
+					this.dialogRef.close(details);
 				});
 			});
 		}

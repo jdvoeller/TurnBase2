@@ -17,7 +17,7 @@ export class GameBoardComponent {
 	public details: IMessage[];
 	public id: string;
 	public game: IGame;
-	public gameDetails: IPersonalPlayerDetails;
+	public playerDetails: IPersonalPlayerDetails;
 	public showStartGameButton = false;
 
 	constructor(
@@ -35,14 +35,16 @@ export class GameBoardComponent {
 	}
 
 	public showStartDialog() {
-		this.dialog.open(PlayerDialogComponent).afterClosed().subscribe((gameDetails: IPersonalPlayerDetails) => {
-			if (gameDetails) {
-				this.gameDetails = gameDetails;
+		this.dialog.open(PlayerDialogComponent).afterClosed().subscribe((playerDetails: IPersonalPlayerDetails) => {
+			if (playerDetails) {
+				this.playerDetails = playerDetails;
 				this.showStartGameButton = false;
-				this.id = gameDetails.gameId;
+				this.id = playerDetails.gameId;
 			} else {
 				this.showStartGameButton = true;
 			}
+
+			this.gameService.listenToGame(this.id).subscribe((game) => this.game = game);
 		});
 	}
 }

@@ -16,4 +16,5 @@ export interface IPlayingPlayer {
 	armorResist: number;
 	dead: boolean;
 	health: number;
+	id: string;
 }

@@ -52,17 +52,24 @@ export class GameService {
 	 * @param player Joining Player
 	 * @returns We will see
 	 */
-	public joinGame(id: string, game: IGame, player: IPlayer): Promise<IPersonalPlayerDetails> {
+	public joinGame(id: string, game: IGame, details: IPersonalPlayerDetails): Promise<IPersonalPlayerDetails> {
+		const allPlayers: IPlayingPlayer[] = game.players;
+		const updatedPlayer: IPlayer = {
+			...details.player,
+			id: this.createPlayerId(),
+		};
+
 		if (game.players.length < 2) {
+			allPlayers.push(this.createPlayingPlayerObj(updatedPlayer));
 			return this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).set({
 				...game,
-				players: game.players.push(this.createPlayingPlayerObj(player)),
+				players: allPlayers,
 				gameStarted: true,
 				playerOneTurn: true,
 			}).then(() => {
 				const playerObj: IPersonalPlayerDetails = {
 					gameId: id,
-					player: player,
+					player: updatedPlayer,
 				};
 
 				return playerObj;
@@ -74,6 +81,10 @@ export class GameService {
 		return new Promise((resolve, reject) => {
 			this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).get().subscribe((data) => resolve(data));
 		});
+	}
+
+	public listenToGame(id: string): Observable<any> {
+		return this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).valueChanges();
 	}
 
 	// Messages
@@ -112,6 +123,7 @@ export class GameService {
 				magicDamage: playerFields.magicDamage.integerValue,
 				magicResist: playerFields.magicResist.integerValue,
 				dead: playerFields.dead.booleanValue,
+				id: playerDetails.id.stringValue,
 				player: {
 					id: playerDetails.id.stringValue,
 					lossTag: playerDetails.lossTag.stringValue,
@@ -121,7 +133,6 @@ export class GameService {
 			};
 			formattedPlayingPlayers.push(formattedPlayer);
 		}
-
 		return formattedPlayingPlayers;
 	}
 
@@ -140,12 +151,13 @@ export class GameService {
 	}
 
 	private createPlayingPlayerObj(player: IPlayer): IPlayingPlayer {
+		const newPlayerId: string = this.createPlayerId();
 		return {
 			player: {
 				name: player.name,
 				winTag: player.winTag,
 				lossTag: player.lossTag,
-				id: this.createPlayerId(),
+				id: player.id ? player.id : newPlayerId,
 			},
 			attackDamage: 0,
 			magicDamage: 0,
@@ -153,6 +165,7 @@ export class GameService {
 			armorResist: 0,
 			dead: false,
 			health: 100,
+			id: player.id ? player.id : newPlayerId,
 		};
 	}
 }

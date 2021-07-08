@@ -55,3 +55,7 @@ button {
 .game-winodw {
 	height: 58vh;
 }
+
+.game-started-window {
+	height: 100%;
+}

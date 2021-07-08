@@ -6,6 +6,7 @@ import { IMessage } from 'src/app/models/game/message';
 import { GameService, IPersonalPlayerDetails } from '../../../services/gameService.service';
 import { MessageDialogComponent } from './messageDialog/messageDialog.component';
 import { PlayerDialogComponent } from './playerDialog/playerDialog.component';
+import { StatsDialogComponent } from './statsDialog/statsDialog.component';
 
 @Component({
 	selector: 'game-board',
@@ -24,7 +25,7 @@ export class GameBoardComponent {
 		private dialog: MatDialog,
 		private gameService: GameService,
 	) {
-		this.showStartDialog();
+		// this.showStartDialog();
 	}
 
 	public openMessageDialog() {
@@ -40,11 +41,40 @@ export class GameBoardComponent {
 				this.playerDetails = playerDetails;
 				this.showStartGameButton = false;
 				this.id = playerDetails.gameId;
+				this.listenToGame(this.id);
 			} else {
 				this.showStartGameButton = true;
 			}
+		});
+	}
 
-			this.gameService.listenToGame(this.id).subscribe((game) => this.game = game);
+	public listenToGame(id: string) {
+		this.gameService.listenToGame(id).subscribe((game: IGame) => {
+			this.game = game;
+			console.log(this.game);
+			if (!game.gameStarted && game.players.length > 1) {
+				if (this.playerDetails.player1 && !this.game.player1PickedStats) {
+					this.openStatsDialog();
+				} else if (!this.playerDetails.player1 && this.game.player1PickedStats) {
+					this.openStatsDialog();
+				}
+			}
+		});
+	}
+
+	public get player1Turn(): boolean {
+		return this.game && this.game.gameStarted && this.game.playerOneTurn && this.playerDetails.player1;
+	}
+
+	private openStatsDialog(): void {
+		this.dialog.open(StatsDialogComponent, {
+			width: '300px',
+			maxWidth: '300px',
+			disableClose: true,
+			data: {
+				game: this.game,
+				playerDetails: this.playerDetails,
+			}
 		});
 	}
 }

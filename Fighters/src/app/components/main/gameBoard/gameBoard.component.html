@@ -1,5 +1,5 @@
 <div class="game-winodw">
-	<div *ngIf="id && (game && !game.gameStarted)"
+	<div *ngIf="id && (game && !game.gameStarted  && !game.player1PickedStats) && playerDetails.player1"
 		class="id-container">
 		<div>Give this ID to your friend:</div>
 		<span id="idText">{{id}}</span>
@@ -10,9 +10,14 @@
 			color="primary"
 			(click)="showStartDialog()">Start Game</button>
 	</div>
+	<div *ngIf="game && !game.gameStarted && !game.player1PickedStats && !playerDetails.player1 ||
+		game && !game.gameStarted && game.player1PickedStats && playerDetails.player1">
+		Please wait...
+	</div>
 
-	<div class="main-game">
-		stuff inside
+	<!-- GAME STARTED WINDOW -->
+	<div>
+		
 	</div>
 </div>
 
@@ -27,12 +32,16 @@
 	</div>
 	
 	<mat-card>
-		<button mat-raised-button color="primary">Attack</button>
+		<button mat-raised-button
+			color="primary"
+			[disabled]="!player1Turn || (!game || (game && !game.gameStarted))">Attack</button>
 		<button mat-mini-fab
 			color="primary"
 			(click)="openMessageDialog()">
 			<mat-icon>message</mat-icon>
 		</button>
-		<button mat-raised-button color="primary">Block</button>
+		<button mat-raised-button
+			color="primary"
+			[disabled]="!player1Turn || (!game || (game && !game.gameStarted))">Block</button>
 	</mat-card>
 </div>

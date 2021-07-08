@@ -15,7 +15,9 @@ export interface IPersonalPlayerDetails {
 export class GameService {
 	constructor(private db: AngularFirestore) { getCurrentEnvironment(Collections.message); }
 
+	//
 	// Game
+	//
 	/**
 	 * Creates a new game and sets the current player as player 1
 	 * @param setupPlayer Basic player
@@ -29,6 +31,7 @@ export class GameService {
 			players: [this.createPlayingPlayerObj(setupPlayer)],
 			id: '',
 			messages: [],
+			player1PickedStats: false,
 		};
 
 		return this.db.collection(getCurrentEnvironment(Collections.games)).add(newGame).then((data) => {
@@ -58,7 +61,7 @@ export class GameService {
 		const allPlayers: IPlayingPlayer[] = game.players;
 		const updatedPlayer: IPlayer = {
 			...details.player,
-			id: this.createPlayerId(),
+			id: this.generateID(14),
 		};
 
 		if (game.players.length < 2) {
@@ -66,8 +69,6 @@ export class GameService {
 			return this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).set({
 				...game,
 				players: allPlayers,
-				gameStarted: true,
-				playerOneTurn: true,
 			}).then(() => {
 				const playerObj: IPersonalPlayerDetails = {
 					gameId: id,
@@ -80,17 +81,33 @@ export class GameService {
 		}
 	}
 
+	/**
+	 * returns Promise of game based on ID
+	 * @param id ID of game
+	 * @returns promsie
+	 */
 	public getGame(id: string) {
 		return new Promise((resolve, reject) => {
 			this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).get().subscribe((data) => resolve(data));
 		});
 	}
 
+	public updateGame(game: IGame): Promise<void> {
+		return this.db.collection(getCurrentEnvironment(Collections.games)).doc(game.id).set(game);
+	}
+
+	/**
+	 * grabs observable of game based on ID
+	 * @param id ID of game
+	 * @returns Observable of game
+	 */
 	public listenToGame(id: string): Observable<any> {
 		return this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).valueChanges();
 	}
 
-	// Messages
+	//
+	// MESSAGES
+	//
 	public sendMessage(message: string, id: string) {
 		this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).valueChanges().subscribe((game) => {
 
@@ -102,6 +119,9 @@ export class GameService {
 		return this.db.collection(getCurrentEnvironment(Collections.message)).valueChanges();
 	}
 
+	//
+	// HELPER FUNCTIONS
+	//
 	public formatGameData(data): IGame {
 		const formattedData: IGame = {
 			gameOver: data.gameOver.booleanValue,
@@ -110,6 +130,7 @@ export class GameService {
 			messages: data.messages.arrayValue,
 			playerOneTurn: data.playerOneTurn.booleanValue,
 			players: this.formattedPlayers(data.players.arrayValue.values),
+			player1PickedStats: data.player1PickedStats.booleanValue,
 		};
 		return formattedData;
 	}
@@ -120,11 +141,11 @@ export class GameService {
 			const playerFields = data[i].mapValue.fields;
 			const playerDetails = playerFields.player.mapValue.fields;
 			const formattedPlayer: IPlayingPlayer = {
-				armorResist: playerFields.armorResist.integerValue,
-				attackDamage: playerFields.attackDamage.integerValue,
-				health: playerFields.health.integerValue,
-				magicDamage: playerFields.magicDamage.integerValue,
-				magicResist: playerFields.magicResist.integerValue,
+				armorResist: parseInt(playerFields.armorResist.integerValue, 0),
+				attackDamage: parseInt(playerFields.attackDamage.integerValue, 0),
+				health: parseInt(playerFields.health.integerValue, 0),
+				magicDamage: parseInt(playerFields.magicDamage.integerValue, 0),
+				magicResist: parseInt(playerFields.magicResist.integerValue, 0),
 				dead: playerFields.dead.booleanValue,
 				id: playerDetails.id.stringValue,
 				player: {
@@ -143,18 +164,18 @@ export class GameService {
 		return data.E_.path.segments[1];
 	}
 
-	private createPlayerId(): string {
+	private generateID(length: number): string {
 		let result = '';
 		const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		const characterLength = characters.length;
-		for (let i = 0; i < 14; i++) {
+		for (let i = 0; i < length; i++) {
 			result += characters.charAt(Math.floor(Math.random() * characterLength));
 		}
 		return result;
 	}
 
 	private createPlayingPlayerObj(player: IPlayer): IPlayingPlayer {
-		const newPlayerId: string = this.createPlayerId();
+		const newPlayerId: string = this.generateID(14);
 		return {
 			player: {
 				name: player.name,
@@ -162,10 +183,10 @@ export class GameService {
 				lossTag: player.lossTag,
 				id: player.id ? player.id : newPlayerId,
 			},
-			attackDamage: 0,
-			magicDamage: 0,
-			magicResist: 0,
-			armorResist: 0,
+			attackDamage: 10,
+			magicDamage: 10,
+			magicResist: 10,
+			armorResist: 10,
 			dead: false,
 			health: 100,
 			id: player.id ? player.id : newPlayerId,

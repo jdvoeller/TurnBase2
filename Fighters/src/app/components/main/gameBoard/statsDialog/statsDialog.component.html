@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Adjust your stats</h1>
+<div mat-dialog-content
+	class="content-container">
+	<h3 [class.error]="totalPoints < 0">{{ totalPoints }}</h3>
+	<form [formGroup]="form">
+		<ng-container *ngFor="let field of dropDownOptions">
+			<mat-form-field>
+				<mat-label>{{field.fieldString}}</mat-label>
+				<mat-select formControlName="{{field.controlName}}">
+					<ng-container *ngFor="let value of formValues">
+						<mat-option value="{{ value }}">{{ value }}</mat-option>
+					</ng-container>
+				</mat-select>
+			</mat-form-field>
+		</ng-container>
+	</form>
+	<div class="button-container">
+		<button mat-raised-button
+			color="primary"
+			(click)="revert()">Revert</button>
+		<button mat-raised-button
+			color="primary"
+			[disabled]="!savable"
+			(click)="submit()">Submit</button>
+	</div>
+</div>

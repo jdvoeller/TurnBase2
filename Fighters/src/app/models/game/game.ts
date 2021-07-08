@@ -6,6 +6,7 @@ export interface IGame {
 	gameStarted: boolean;
 	playerOneTurn: boolean;
 	gameOver: boolean;
+	player1PickedStats: boolean;
 	id: string;
 
 	// Player

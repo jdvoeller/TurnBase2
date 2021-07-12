@@ -80,7 +80,6 @@ export class StatsDialogComponent {
 
 		this.form.valueChanges.subscribe((data) => {
 			let pointsArray = Object.values(data);
-			console.log(pointsArray);
 			pointsArray = pointsArray.map((data2: string) => parseInt(data2, 0));
 
 			let pointsTotal = 0;

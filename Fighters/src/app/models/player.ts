@@ -17,4 +17,6 @@ export interface IPlayingPlayer {
 	dead: boolean;
 	health: number;
 	id: string;
+	blocking: boolean;
+	blockAmount: number;
 }

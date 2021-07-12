@@ -6,6 +6,7 @@ import { GameService } from '../../../services/gameService.service';
 import { GameBoardComponent } from './gameBoard.component';
 import { MessageDialogComponent } from './messageDialog/messageDialog.component';
 import { MessageDialogModule } from './messageDialog/messageDialog.module';
+import { PlayerDetailsModule } from './playerDetails/playerDetails.module';
 import { PlayerDialogComponent } from './playerDialog/playerDialog.component';
 import { PlayerDialogModule } from './playerDialog/playerDialog.module';
 import { StatsDialogComponent } from './statsDialog/statsDialog.component';
@@ -21,6 +22,7 @@ import { StatsDialogModule } from './statsDialog/statsDialog.module';
 		MessageDialogModule,
 		PlayerDialogModule,
 		StatsDialogModule,
+		PlayerDetailsModule,
 	],
 	exports: [GameBoardComponent],
 	providers: [GameService],

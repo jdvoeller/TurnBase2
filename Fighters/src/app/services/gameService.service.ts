@@ -13,7 +13,10 @@ export interface IPersonalPlayerDetails {
 
 @Injectable()
 export class GameService {
-	constructor(private db: AngularFirestore) { getCurrentEnvironment(Collections.message); }
+	public baseStat = 10;
+	public baseHealth = 100;
+
+	constructor(private db: AngularFirestore) { }
 
 	//
 	// Game
@@ -106,20 +109,6 @@ export class GameService {
 	}
 
 	//
-	// MESSAGES
-	//
-	public sendMessage(message: string, id: string) {
-		this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).valueChanges().subscribe((game) => {
-
-		});
-		// return this.db.collection(getCurrentEnvironment(Collections.message)).add(string);
-	}
-
-	public getMessages(): Observable<any[]> {
-		return this.db.collection(getCurrentEnvironment(Collections.message)).valueChanges();
-	}
-
-	//
 	// HELPER FUNCTIONS
 	//
 	public formatGameData(data): IGame {
@@ -127,7 +116,7 @@ export class GameService {
 			gameOver: data.gameOver.booleanValue,
 			gameStarted: data.gameOver.booleanValue,
 			id: data.id.stringValue,
-			messages: data.messages.arrayValue,
+			messages: data.messages.arrayValue.values ? data.messages.arrayValue.values : [],
 			playerOneTurn: data.playerOneTurn.booleanValue,
 			players: this.formattedPlayers(data.players.arrayValue.values),
 			player1PickedStats: data.player1PickedStats.booleanValue,
@@ -148,6 +137,8 @@ export class GameService {
 				magicResist: parseInt(playerFields.magicResist.integerValue, 0),
 				dead: playerFields.dead.booleanValue,
 				id: playerDetails.id.stringValue,
+				blocking: playerFields.blocking.booleanValue,
+				blockAmount: parseInt(playerFields.blockAmount.integerValue, 0),
 				player: {
 					id: playerDetails.id.stringValue,
 					lossTag: playerDetails.lossTag.stringValue,
@@ -183,13 +174,15 @@ export class GameService {
 				lossTag: player.lossTag,
 				id: player.id ? player.id : newPlayerId,
 			},
-			attackDamage: 10,
-			magicDamage: 10,
-			magicResist: 10,
-			armorResist: 10,
+			attackDamage: this.baseStat,
+			magicDamage: this.baseStat,
+			magicResist: this.baseStat,
+			armorResist: this.baseStat,
 			dead: false,
-			health: 100,
+			health: this.baseHealth,
 			id: player.id ? player.id : newPlayerId,
+			blocking: false,
+			blockAmount: 0,
 		};
 	}
 }

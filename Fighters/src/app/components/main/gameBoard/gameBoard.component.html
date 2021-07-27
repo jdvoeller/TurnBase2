@@ -1,34 +1,73 @@
 <div class="game-winodw">
-	<div *ngIf="id && (game && !game.gameStarted)"
+	<div *ngIf="id && (game && !game.gameStarted  && !game.player1PickedStats) && playerDetails.player1"
 		class="id-container">
 		<div>Give this ID to your friend:</div>
 		<span id="idText">{{id}}</span>
 	</div>
 	<div *ngIf="showStartGameButton"
-		class="start-game">
+		class="center-flex-column">
 		<button mat-raised-button
 			color="primary"
 			(click)="showStartDialog()">Start Game</button>
 	</div>
+	<div *ngIf="game && !game.gameStarted && !game.player1PickedStats && !playerDetails.player1 ||
+		game && !game.gameStarted && game.player1PickedStats && playerDetails.player1"
+		class="center-flex-column waiting">
+		Your opponent is selecting their stats. Please wait...
+	</div>
+
+	<!-- GAME STARTED WINDOW -->
+	<div *ngIf="game && game.gameStarted && allPlayersAlive"
+		class="fight-details">
+		<player-details [player]="myPlayer"
+			[showOtherData]="true"></player-details>
+		<h4>VS.</h4>
+		<player-details [player]="opponent"></player-details>
+	</div>
+
+	<!-- GAME OVER -->
+	<div *ngIf="game && game.gameOver"
+		class="game-over-container">
+		<div class="winner-info">
+			<h3>{{ gameWinner.name }} Wins!</h3>
+			<h5>"{{ gameWinner.winTag }}"</h5>
+		</div>
+		<div>
+			<span class="loser-info">"{{ gameLoser.lossTag }}" - {{ gameLoser.name }}</span>
+		</div>
+	</div>
 </div>
 
 <div class="bottom container">
-	<div class="game-details" id="game-details">
-		<ng-container *ngFor="let detail of details">
-			<div class="date-container">
-				<span>{{ detail.message }}</span>
-				<span class="time">{{ detail.time.toDate() | date:'shortTime' }}</span>
-			</div>
+	<div class="message-details"
+		id="message-details">
+		<ng-container *ngIf="game?.messages">
+			<ng-container *ngFor="let message of game?.messages">
+				<div class="date-container">
+					<span>{{ message.message }}</span>
+					<div class="mssg-info">
+						<span class="message-info">{{ message.sender }}</span>
+						<span class="message-info time">{{ message.time.toDate() | date:'shortTime' }}</span>
+					</div>
+				</div>
+			</ng-container>
 		</ng-container>
 	</div>
 	
 	<mat-card>
-		<button mat-raised-button color="primary">Attack</button>
-		<button mat-mini-fab
+		<button mat-raised-button
+			color="primary"
+			[disabled]="disableActions"
+			(click)="attack()">Attack</button>
+		<button [disabled]="!game"
+			mat-mini-fab
 			color="primary"
 			(click)="openMessageDialog()">
 			<mat-icon>message</mat-icon>
 		</button>
-		<button mat-raised-button color="primary">Block</button>
+		<button mat-raised-button
+			color="primary"
+			[disabled]="disableActions"
+			(click)="block()">Block</button>
 	</mat-card>
 </div>

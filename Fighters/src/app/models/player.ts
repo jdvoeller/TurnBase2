@@ -16,4 +16,7 @@ export interface IPlayingPlayer {
 	armorResist: number;
 	dead: boolean;
 	health: number;
+	id: string;
+	blocking: boolean;
+	blockAmount: number;
 }

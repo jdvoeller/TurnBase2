@@ -7,7 +7,7 @@ button {
 	font-size: large;
 }
 
-.game-details {
+.message-details {
 	height: 100px;
 	border-top: 1px solid gray;
 	background-color: honeydew;
@@ -27,10 +27,21 @@ button {
 	border-bottom: rgb(198, 209, 198) 1px inset;
 }
 
-.time {
-	color: gray;
-	font-size: small;
+.mssg-info {
+	display: flex;
+	flex-direction: column;
 }
+
+.message-info {
+	color: gray;
+	font-size: 12px;
+}
+
+.time {
+	font-size: 10px;
+	align-self: flex-end;
+}
+
 
 .id-container {
 	display: flex;
@@ -46,8 +57,54 @@ button {
 	padding: 4px;
 }
 
-.start-game {
+.center-flex-column {
+	height: 100%;
 	display: flex;
+	flex-direction: column;
+	align-items: center;
 	justify-content: center;
 	padding-bottom: 16px;
+}
+
+.waiting {
+	padding: 16px;
+}
+
+.game-winodw {
+	height: 58vh;
+}
+
+.game-started-window {
+	height: 100%;
+}
+
+.fight-details {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.fight-details {
+	height: 100%;
+}
+
+.game-over-container {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.winner-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: green;
+}
+
+.loser-info {
+	font-size: small;
+	color: red;
 }

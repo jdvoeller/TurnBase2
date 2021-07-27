@@ -11,16 +11,8 @@ export class NavBarComponent {
 	constructor(private router: Router) {
 	}
 
-	public navToHostGame() {
-		this.router.navigateByUrl('hostGame');
-	}
-
 	public navToUserSettings() {
 		this.router.navigateByUrl('userSettings');
-	}
-
-	public navToJoinGame() {
-		this.router.navigateByUrl('joinGame');
 	}
 
 	public testGame() {

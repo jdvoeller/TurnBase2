@@ -1,0 +1,15 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title class="title-name">{{ player.player.name }}</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<span>Health: {{ player?.health }}</span>
+		<mat-progress-bar [value]="player?.health"></mat-progress-bar>
+		<ng-container *ngIf="showOtherData">
+			<span>Attack Damage: {{ player?.attackDamage }}</span>
+			<span>Magic Damage: {{ player?.magicDamage }}</span>
+			<span>Armor: {{ player?.armorResist }}</span>
+			<span>Magic Resist: {{ player?.magicResist }}</span>
+		</ng-container>
+	</mat-card-content>
+</mat-card>

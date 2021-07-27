@@ -57,10 +57,17 @@ button {
 	padding: 4px;
 }
 
-.start-game {
+.center-flex-column {
+	height: 100%;
 	display: flex;
+	flex-direction: column;
+	align-items: center;
 	justify-content: center;
 	padding-bottom: 16px;
+}
+
+.waiting {
+	padding: 16px;
 }
 
 .game-winodw {

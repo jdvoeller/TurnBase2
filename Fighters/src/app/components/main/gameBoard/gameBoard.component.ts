@@ -101,14 +101,6 @@ export class GameBoardComponent {
 	public listenToGame(id: string) {
 		this.gameService.listenToGame(id).subscribe((game: IGame) => {
 			this.game = game;
-
-			// if (this.game.messages.length > this.messageAmount) {
-			// 	this.allowScroll = false;
-			// 	this.messageAmount = this.game.messages.length;
-			// } else {
-			// 	this.allowScroll = true;
-			// }
-
 			if (!game.gameStarted && game.players.length > 1) {
 				if (this.playerDetails.player1 && !this.game.player1PickedStats) {
 					this.openStatsDialog();

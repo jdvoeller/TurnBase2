@@ -1,0 +1,12 @@
+<mat-card class="item-container">
+	<div class="item"
+		*ngFor="let item of shopItems">
+		<button mat-mini-fab
+			color="primary"
+			(click)="openItem(item)">
+			<mat-icon>{{ item.icon }}</mat-icon>
+		</button>
+		<span class="item-name">{{ item.name }}</span>
+		<span class="cost">{{ item.cost }} gp</span>
+	</div>
+</mat-card>

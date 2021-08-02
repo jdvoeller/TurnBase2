@@ -1,0 +1,16 @@
+<div mat-dialog-title
+	class="title">
+	<mat-icon>{{ item.icon }}</mat-icon>
+</div>
+<div mat-dialog-content>
+	Description:
+	<span>{{ item.description }}</span>
+</div>
+<mat-dialog-actions align="end">
+	<button mat-raised-button
+		color="warn"
+		(click)="matDialogRef.close()">Cancel</button>
+	<button mat-raised-button
+		color="accent"
+		(click)="buy()">Buy {{ item.cost }}gp</button>
+</mat-dialog-actions>

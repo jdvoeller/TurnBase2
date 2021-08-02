@@ -3,6 +3,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { Collections, getCurrentEnvironment } from '../../environments/environment';
 import { IGame } from '../models/game/game';
+import { Phase } from '../models/game/phases';
 import { IPlayer, IPlayingPlayer } from '../models/player';
 
 export interface IPersonalPlayerDetails {
@@ -35,6 +36,7 @@ export class GameService {
 			id: '',
 			messages: [],
 			player1PickedStats: false,
+			phase: Phase.attack,
 		};
 
 		return this.db.collection(getCurrentEnvironment(Collections.games)).add(newGame).then((data) => {
@@ -120,6 +122,7 @@ export class GameService {
 			playerOneTurn: data.playerOneTurn.booleanValue,
 			players: this.formattedPlayers(data.players.arrayValue.values),
 			player1PickedStats: data.player1PickedStats.booleanValue,
+			phase: data.phase.stringValue,
 		};
 		return formattedData;
 	}
@@ -139,6 +142,7 @@ export class GameService {
 				id: playerDetails.id.stringValue,
 				blocking: playerFields.blocking.booleanValue,
 				blockAmount: parseInt(playerFields.blockAmount.integerValue, 0),
+				currency: parseInt(playerFields.currency.integerValue, 0),
 				player: {
 					id: playerDetails.id.stringValue,
 					lossTag: playerDetails.lossTag.stringValue,
@@ -183,6 +187,7 @@ export class GameService {
 			id: player.id ? player.id : newPlayerId,
 			blocking: false,
 			blockAmount: 0,
+			currency: 0,
 		};
 	}
 }

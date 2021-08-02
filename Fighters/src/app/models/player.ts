@@ -19,4 +19,5 @@ export interface IPlayingPlayer {
 	id: string;
 	blocking: boolean;
 	blockAmount: number;
+	currency: number;
 }

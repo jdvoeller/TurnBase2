@@ -19,6 +19,7 @@
 	<!-- GAME STARTED WINDOW -->
 	<div *ngIf="game && game.gameStarted && allPlayersAlive"
 		class="fight-details">
+		<phase-stepper [stepperData]="stepperData"></phase-stepper>
 		<player-details [player]="myPlayer"
 			[showOtherData]="true"></player-details>
 		<h4>VS.</h4>
@@ -58,7 +59,7 @@
 		<button mat-raised-button
 			color="primary"
 			[disabled]="disableActions"
-			(click)="attack()">Attack</button>
+			(click)="openActions()">Actions</button>
 		<button [disabled]="!game"
 			mat-mini-fab
 			color="primary"

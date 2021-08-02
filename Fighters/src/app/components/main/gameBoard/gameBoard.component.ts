@@ -5,7 +5,9 @@ import { IMessage } from 'src/app/models/game/message';
 import { IPlayer, IPlayingPlayer } from 'src/app/models/player';
 
 import { GameService, IPersonalPlayerDetails } from '../../../services/gameService.service';
+import { ActionDialogComponent } from './actionDialog/actionDialog.component';
 import { IMessageData, MessageDialogComponent } from './messageDialog/messageDialog.component';
+import { IPhaseStepperData } from './phaseStepper/phaseStepper.component';
 import { PlayerDialogComponent } from './playerDialog/playerDialog.component';
 import { StatsDialogComponent } from './statsDialog/statsDialog.component';
 
@@ -111,6 +113,42 @@ export class GameBoardComponent {
 		});
 	}
 
+	public openActions(): void {
+		this.dialog.open(ActionDialogComponent, {
+			data: this.myPlayer,
+			width: '300px',
+			height: '500px',
+		}).afterClosed().subscribe((data) => {
+			if (data) {
+				if (data === 'attack') {
+					this.attack();
+				} else if (data === 'coin') {
+					this.earnCoin();
+				}
+			}
+		});
+	}
+
+	public earnCoin() {
+		const updatedPlayers: IPlayingPlayer[] = this.game.players.map((player) => {
+			if (player.id === this.myPlayer.id) {
+				player.currency += 1;
+			}
+			return player;
+		});
+
+		const updatedGame: IGame = {
+			...this.game,
+			playerOneTurn: !this.game.playerOneTurn,
+			players: updatedPlayers
+		};
+
+		this.gameService.updateGame(updatedGame).then(() => {
+			console.log(this.game);
+			this.sendMessage(`${this.myPlayer.player.name} earned a coin!`);
+		});
+	}
+
 	public attack() {
 		const dealDamage: IDamageDetails = this.dealDamageAndUpdatedPlayers(this.myPlayer, this.opponent);
 		const updatedGame: IGame = {
@@ -136,7 +174,7 @@ export class GameBoardComponent {
 		if (blockAmount > 8) {
 			blockAmount += 2;
 		}
-		const myPlayer: IPlayingPlayer = this.game.players.filter((player) => player.id === this.playerDetails.player.id)[0];
+		const myPlayer: IPlayingPlayer = {...this.myPlayer};
 
 		const updatedPlayers: IPlayingPlayer[] = this.game.players.map((player) => {
 			if (player.id === myPlayer.id) {
@@ -172,6 +210,13 @@ export class GameBoardComponent {
 			messages: updatedMessages,
 		};
 		this.gameService.updateGame(updatedGame);
+	}
+
+	public get stepperData(): IPhaseStepperData {
+		return {
+			activeStep: this.game.phase,
+			playerOneTurn: this.game.playerOneTurn
+		};
 	}
 
 	private get myPlayersTurn(): boolean {

@@ -1,0 +1,19 @@
+:host {
+	width: 100%;
+}
+
+.stepper-container {
+	padding: 14px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.active {
+	color: black;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.not-active {
+	color: grey;
+}

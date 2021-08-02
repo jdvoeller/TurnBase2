@@ -1,0 +1,51 @@
+<div *ngIf="!showShop">
+	<h1 mat-dialog-title>Perform an Action</h1>
+	<div mat-dialog-content>
+		<div class="button-container">
+			<div class="button">
+				<button mat-mini-fab
+					(click)="attack()"
+					color="primary">
+					<mat-icon>gavel</mat-icon>
+				</button>
+				<span>Attack</span>
+			</div>
+	
+			<div class="bottom-buttons">
+				<div class="button">
+					<button mat-mini-fab
+						color="primary"
+						(click)="shop()">
+						<mat-icon>shopping_bag</mat-icon>
+					</button>
+					<span>Shop</span>
+				</div>
+		
+				<div class="button">
+					<button mat-mini-fab
+						color="primary"
+						(click)="earnCoin()">
+						<mat-icon>paid</mat-icon>
+					</button>
+					<span>Earn</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div *ngIf="showShop">
+	<div mat-dialog-title
+		class="shop-title">
+		<h1>Shop</h1>
+		<h5>Currency: {{ player.currency }} gp</h5>
+	</div>
+	<div mat-dialog-content>
+		<shop [player]="player"></shop>
+	</div>
+	<mat-dialog-actions align="end">
+		<button mat-raised-button
+			(click)="showShop = false"
+			color="primary">Continue</button>
+	</mat-dialog-actions>
+</div>

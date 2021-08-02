@@ -1,0 +1,30 @@
+.item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 6px;
+}
+
+.item span {
+	margin-top: 4px;
+	font-size: 10px;
+}
+
+.item-name {
+	font-weight: bold;
+}
+
+mat-card {
+	margin-bottom: 14px;
+	background-color: grey;
+}
+
+.cost {
+	color: gold;
+}
+
+.item-container {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}

@@ -28,9 +28,7 @@ export class GameBoardComponent {
 	public game: IGame;
 	public playerDetails: IPersonalPlayerDetails;
 	public showStartGameButton = false;
-	// public messageAmount = 0;
-
-	// private allowScroll = false;
+	public isLoading =  false;
 
 	constructor(
 		private dialog: MatDialog,
@@ -79,6 +77,19 @@ export class GameBoardComponent {
 		return this.game.players.filter((player) => player.health <= 0)[0].player;
 	}
 
+	public get showShareId(): boolean {
+		return !!this.id && (this.game && !this.game.gameStarted  && !this.game.player1PickedStats) && this.playerDetails.player1;
+	}
+
+	public get showOpponentSelecting(): boolean {
+		return this.game && !this.game.gameStarted && !this.game.player1PickedStats && !this.playerDetails.player1 ||
+			this.game && !this.game.gameStarted && this.game.player1PickedStats && this.playerDetails.player1;
+	}
+
+	public get isStatsDialogOpen(): boolean {
+		return !!this.dialog.openDialogs.filter((dialog) => dialog.id === 'statDialog').length;
+	}
+
 	public openMessageDialog() {
 		const messageData: IMessageData = {
 			game: this.game,
@@ -88,7 +99,7 @@ export class GameBoardComponent {
 	}
 
 	public showStartDialog() {
-		this.dialog.open(PlayerDialogComponent).afterClosed().subscribe((playerDetails: IPersonalPlayerDetails) => {
+		this.dialog.open(PlayerDialogComponent, { id: 'startDialog'}).afterClosed().subscribe((playerDetails: IPersonalPlayerDetails) => {
 			if (playerDetails) {
 				this.playerDetails = playerDetails;
 				this.showStartGameButton = false;
@@ -117,7 +128,7 @@ export class GameBoardComponent {
 		this.dialog.open(ActionDialogComponent, {
 			data: this.myPlayer,
 			width: '300px',
-			height: '500px',
+			height: '300px',
 		}).afterClosed().subscribe((data) => {
 			if (data) {
 				if (data === 'attack') {
@@ -233,6 +244,7 @@ export class GameBoardComponent {
 			width: '300px',
 			maxWidth: '300px',
 			disableClose: true,
+			id: 'statDialog',
 			data: {
 				game: this.game,
 				playerDetails: this.playerDetails,

@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule, MatCardModule, MatIconModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { GameService } from '../../../services/gameService.service';
 import { ActionDialogComponent } from './actionDialog/actionDialog.component';
 import { ActionDialogModule } from './actionDialog/actionDialog.module';
-
 import { GameBoardComponent } from './gameBoard.component';
 import { MessageDialogComponent } from './messageDialog/messageDialog.component';
 import { MessageDialogModule } from './messageDialog/messageDialog.module';
@@ -21,6 +22,7 @@ import { StatsDialogModule } from './statsDialog/statsDialog.module';
 		MatCardModule,
 		MatButtonModule,
 		MatIconModule,
+		MatProgressSpinnerModule,
 
 		MessageDialogModule,
 		PlayerDialogModule,

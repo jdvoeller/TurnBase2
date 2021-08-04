@@ -52,7 +52,7 @@ button {
 	padding-bottom: 8px;
 }
 
-.id-container span {
+#idText {
 	background-color: lightsteelblue;
 	padding: 4px;
 }
@@ -107,4 +107,16 @@ button {
 .loser-info {
 	font-size: small;
 	color: red;
+}
+
+.loading-spinner {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+	margin-top: 8px;
+}
+
+.loading-spinner span {
+	font-size: 12px;
+	margin-top: 8px;
 }

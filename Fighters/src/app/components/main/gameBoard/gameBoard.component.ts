@@ -128,7 +128,7 @@ export class GameBoardComponent {
 		this.dialog.open(ActionDialogComponent, {
 			data: this.myPlayer,
 			width: '300px',
-			height: '300px',
+			height: '500px',
 		}).afterClosed().subscribe((data) => {
 			if (data) {
 				if (data === 'attack') {
@@ -155,7 +155,6 @@ export class GameBoardComponent {
 		};
 
 		this.gameService.updateGame(updatedGame).then(() => {
-			console.log(this.game);
 			this.sendMessage(`${this.myPlayer.player.name} earned a coin!`);
 		});
 	}

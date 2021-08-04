@@ -41,10 +41,14 @@ export class PlayerDialogComponent {
 
 	public setupGame() {
 		if (this.createMatch) {
-			this.gameService.setupGame(this.form.value).then((details) => this.dialogRef.close(details));
+			this.gameService.setupGame(this.form.value).subscribe((details) => this.dialogRef.close(details));
 		} else if (this.joinMatch) {
-			this.gameService.getGame(this.form.get('gameId').value).then((data: any) => {
-				const game: IGame = this.gameService.formatGameData(data.kf.nn.proto.mapValue.fields);
+			this.gameService.getGame(this.form.get('gameId').value).subscribe((data: IGame) => {
+				const game: IGame = {
+					...data,
+					id: data.id,
+				};
+
 				const joinDetails: IPersonalPlayerDetails = {
 					player: {
 						name: this.form.get('name').value,
@@ -52,11 +56,11 @@ export class PlayerDialogComponent {
 						lossTag: this.form.get('lossTag').value,
 						id: '',
 					},
-					gameId: this.form.get('gameId').value,
+					gameId: data.id,
 					player1: false,
 				};
 
-				this.gameService.joinGame(game.id, game, joinDetails).then((details: any) => {
+				this.gameService.joinGame(game.id, game, joinDetails).subscribe((details: any) => {
 					this.dialogRef.close(details);
 				});
 			});

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
 import { Collections, getCurrentEnvironment } from '../../environments/environment';
 import { IGame } from '../models/game/game';
 import { Phase } from '../models/game/phases';
@@ -14,8 +16,10 @@ export interface IPersonalPlayerDetails {
 
 @Injectable()
 export class GameService {
-	public baseStat = 10;
+	public baseStat = 5;
 	public baseHealth = 100;
+
+	protected ENVIRONMENT = getCurrentEnvironment(Collections.games);
 
 	constructor(private db: AngularFirestore) { }
 
@@ -25,34 +29,39 @@ export class GameService {
 	/**
 	 * Creates a new game and sets the current player as player 1
 	 * @param setupPlayer Basic player
-	 * @returns Promise of IPersonalPlayerDetails
 	 */
-	public setupGame(setupPlayer: IPlayer): Promise<IPersonalPlayerDetails> {
-		const newGame: IGame = {
+	public setupGame(setupPlayer: IPlayer): Observable<IPersonalPlayerDetails> {
+		let newGameId = this.generateID(4);
+		// tslint:disable-next-line
+		let newGame: IGame = {
 			gameStarted: false,
 			playerOneTurn: false,
 			gameOver: false,
 			players: [this.createPlayingPlayerObj(setupPlayer)],
-			id: '',
+			id: newGameId,
 			messages: [],
 			player1PickedStats: false,
 			phase: Phase.attack,
 		};
 
-		return this.db.collection(getCurrentEnvironment(Collections.games)).add(newGame).then((data) => {
-			const id: string = this.getNewId(data);
-			this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).set({
-				...newGame,
-				id: id,
-			});
+		return this.db.collection(this.ENVIRONMENT).get().pipe(
+			tap((data) => {
+				while (data.docs.filter((doc) => doc.data().id === newGameId).length) {
+					newGameId = newGameId + this.generateID(1);
+					newGame.id = newGameId;
+				}
 
-			const gameObj: IPersonalPlayerDetails = {
-				player: newGame.players[0].player,
-				gameId: id,
-				player1: true,
-			};
-			return gameObj;
-		});
+				this.db.collection(this.ENVIRONMENT).doc(newGameId).set(newGame);
+			}),
+			map(() => {
+				const gameObj: IPersonalPlayerDetails = {
+					player: newGame.players[0].player,
+					gameId: newGameId,
+					player1: true,
+				};
+				return gameObj;
+			}),
+		);
 	}
 
 	/**
@@ -60,9 +69,8 @@ export class GameService {
 	 * @param id The gameID
 	 * @param game The game that the player is joining
 	 * @param player Joining Player
-	 * @returns We will see
 	 */
-	public joinGame(id: string, game: IGame, details: IPersonalPlayerDetails): Promise<IPersonalPlayerDetails> {
+	public joinGame(id: string, game: IGame, details: IPersonalPlayerDetails): Observable<IPersonalPlayerDetails> {
 		const allPlayers: IPlayingPlayer[] = game.players;
 		const updatedPlayer: IPlayer = {
 			...details.player,
@@ -71,30 +79,34 @@ export class GameService {
 
 		if (game.players.length < 2) {
 			allPlayers.push(this.createPlayingPlayerObj(updatedPlayer));
-			return this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).set({
-				...game,
-				players: allPlayers,
-			}).then(() => {
-				const playerObj: IPersonalPlayerDetails = {
-					gameId: id,
-					player: updatedPlayer,
-					player1: false,
-				};
-
-				return playerObj;
-			});
+			return this.db.collection(this.ENVIRONMENT).get().pipe(
+				map((data) => data.docs.filter((doc) => doc.data().id === id)[0]),
+				tap((data) => {
+					this.db.collection(this.ENVIRONMENT).doc(id).set({
+						...data.data(),
+						players: allPlayers,
+					});
+				}),
+				map(() => {
+					const playerObj: IPersonalPlayerDetails = {
+						gameId: id,
+						player: updatedPlayer,
+						player1: false,
+					};
+					return playerObj;
+				}),
+			);
 		}
 	}
 
 	/**
-	 * returns Promise of game based on ID
+	 * returns game based on ID
 	 * @param id ID of game
-	 * @returns promsie
 	 */
-	public getGame(id: string) {
-		return new Promise((resolve, reject) => {
-			this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).get().subscribe((data) => resolve(data));
-		});
+	public getGame(id: string): Observable<IGame> {
+		return this.db.collection(this.ENVIRONMENT).doc(id).get().pipe(
+			map((data) => (data.data() as IGame)),
+		);
 	}
 
 	public updateGame(game: IGame): Promise<void> {
@@ -107,56 +119,7 @@ export class GameService {
 	 * @returns Observable of game
 	 */
 	public listenToGame(id: string): Observable<any> {
-		return this.db.collection(getCurrentEnvironment(Collections.games)).doc(id).valueChanges();
-	}
-
-	//
-	// HELPER FUNCTIONS
-	//
-	public formatGameData(data): IGame {
-		const formattedData: IGame = {
-			gameOver: data.gameOver.booleanValue,
-			gameStarted: data.gameOver.booleanValue,
-			id: data.id.stringValue,
-			messages: data.messages.arrayValue.values ? data.messages.arrayValue.values : [],
-			playerOneTurn: data.playerOneTurn.booleanValue,
-			players: this.formattedPlayers(data.players.arrayValue.values),
-			player1PickedStats: data.player1PickedStats.booleanValue,
-			phase: data.phase.stringValue,
-		};
-		return formattedData;
-	}
-
-	private formattedPlayers(data: any[]): IPlayingPlayer[] {
-		const formattedPlayingPlayers: IPlayingPlayer[] = [];
-		for (let i = 0; i < data.length; i++) {
-			const playerFields = data[i].mapValue.fields;
-			const playerDetails = playerFields.player.mapValue.fields;
-			const formattedPlayer: IPlayingPlayer = {
-				armorResist: parseInt(playerFields.armorResist.integerValue, 0),
-				attackDamage: parseInt(playerFields.attackDamage.integerValue, 0),
-				health: parseInt(playerFields.health.integerValue, 0),
-				magicDamage: parseInt(playerFields.magicDamage.integerValue, 0),
-				magicResist: parseInt(playerFields.magicResist.integerValue, 0),
-				dead: playerFields.dead.booleanValue,
-				id: playerDetails.id.stringValue,
-				blocking: playerFields.blocking.booleanValue,
-				blockAmount: parseInt(playerFields.blockAmount.integerValue, 0),
-				currency: parseInt(playerFields.currency.integerValue, 0),
-				player: {
-					id: playerDetails.id.stringValue,
-					lossTag: playerDetails.lossTag.stringValue,
-					winTag: playerDetails.winTag.stringValue,
-					name: playerDetails.name.stringValue,
-				}
-			};
-			formattedPlayingPlayers.push(formattedPlayer);
-		}
-		return formattedPlayingPlayers;
-	}
-
-	private getNewId(data: any): string {
-		return data.E_.path.segments[1];
+		return this.db.collection(this.ENVIRONMENT).doc(id).valueChanges();
 	}
 
 	private generateID(length: number): string {
@@ -166,6 +129,7 @@ export class GameService {
 		for (let i = 0; i < length; i++) {
 			result += characters.charAt(Math.floor(Math.random() * characterLength));
 		}
+
 		return result;
 	}
 

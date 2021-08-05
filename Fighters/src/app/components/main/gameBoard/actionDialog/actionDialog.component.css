@@ -26,3 +26,17 @@
 	justify-content: space-between;
 	align-items: center;
 }
+
+.player-coins {
+	padding: 0 8px;
+	display: flex;
+	background-color: grey;
+}
+
+.player-coins h5:first-child {
+	margin-right: 4px;
+}
+
+.coins {
+	color: gold;
+}

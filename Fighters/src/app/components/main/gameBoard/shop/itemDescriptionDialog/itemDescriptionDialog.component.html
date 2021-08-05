@@ -1,10 +1,10 @@
 <div mat-dialog-title
 	class="title">
-	<mat-icon>{{ item.icon }}</mat-icon>
+	<mat-icon>{{ data.item.icon }}</mat-icon>
 </div>
 <div mat-dialog-content>
 	Description:
-	<span>{{ item.description }}</span>
+	<span>{{ data.item.description }}</span>
 </div>
 <mat-dialog-actions align="end">
 	<button mat-raised-button
@@ -12,5 +12,6 @@
 		(click)="matDialogRef.close()">Cancel</button>
 	<button mat-raised-button
 		color="accent"
-		(click)="buy()">Buy {{ item.cost }}gp</button>
+		[disabled]="data.player.currency < data.item.cost"
+		(click)="buy()">Buy {{ data.item.cost }}gp</button>
 </mat-dialog-actions>

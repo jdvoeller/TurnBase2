@@ -152,6 +152,7 @@ export class GameService {
 			blocking: false,
 			blockAmount: 0,
 			currency: 0,
+			items: []
 		};
 	}
 }

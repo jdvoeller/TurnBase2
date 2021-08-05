@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { IGame } from 'src/app/models/game/game';
-import { IMessage } from 'src/app/models/game/message';
-import { IPlayer, IPlayingPlayer } from 'src/app/models/player';
 
+import { IGame, MOCK_GAME_DATA } from '../../../models/game/game';
+import { IItem, ItemNames } from '../../../models/game/item';
+import { IMessage } from '../../../models/game/message';
+import { IPlayer, IPlayerWithItems, IPlayingPlayer } from '../../../models/player';
 import { GameService, IPersonalPlayerDetails } from '../../../services/gameService.service';
 import { ActionDialogComponent } from './actionDialog/actionDialog.component';
 import { IMessageData, MessageDialogComponent } from './messageDialog/messageDialog.component';
@@ -35,6 +36,15 @@ export class GameBoardComponent {
 		private gameService: GameService,
 	) {
 		this.showStartDialog();
+
+		// TESTING ACTIONS
+		// this.game = MOCK_GAME_DATA;
+		// this.playerDetails = {
+		// 	player: this.game.players[0].player,
+		// 	player1: true,
+		// 	gameId: this.game.id,
+		// };
+		// this.openActions();
 
 		setInterval(() => {
 			if (this.game) {
@@ -90,6 +100,10 @@ export class GameBoardComponent {
 		return !!this.dialog.openDialogs.filter((dialog) => dialog.id === 'statDialog').length;
 	}
 
+	public get showOtherPlayersDetails(): boolean {
+		return !!this.myPlayer.items.filter((item) => item.name === ItemNames.xRayEyes).length;
+	}
+
 	public openMessageDialog() {
 		const messageData: IMessageData = {
 			game: this.game,
@@ -128,13 +142,32 @@ export class GameBoardComponent {
 		this.dialog.open(ActionDialogComponent, {
 			data: this.myPlayer,
 			width: '300px',
-			height: '500px',
 		}).afterClosed().subscribe((data) => {
 			if (data) {
 				if (data === 'attack') {
 					this.attack();
 				} else if (data === 'coin') {
 					this.earnCoin();
+				} else {
+					// Player bought something
+					const newItem = (data as IItem);
+					if (newItem.name === ItemNames.healthPotion) {
+						this.healPlayer(newItem.health);
+					} else {
+						const updatedPlayers: IPlayingPlayer[] = this.game.players.map((player) => {
+							if (player.id === this.myPlayer.id) {
+								player.items.push(newItem);
+								player.currency -= newItem.cost;
+							}
+							return player;
+						});
+
+						const updatedGame: IGame = {
+							...this.game,
+							players: updatedPlayers,
+						};
+						this.gameService.updateGame(updatedGame);
+					}
 				}
 			}
 		});
@@ -229,6 +262,25 @@ export class GameBoardComponent {
 		};
 	}
 
+	private healPlayer(healAmount: number): void {
+		const updatedPlayers: IPlayingPlayer[] = this.game.players.map((player) => {
+			if (player.id === this.myPlayer.id) {
+				player.health += healAmount;
+			}
+			return player;
+		});
+
+		const updatedGame: IGame = {
+			...this.game,
+			playerOneTurn: !this.game.playerOneTurn,
+			players: updatedPlayers
+		};
+
+		this.gameService.updateGame(updatedGame).then(() => {
+			this.sendMessage(`${this.myPlayer.player.name} healed ${healAmount} hp!`);
+		});
+	}
+
 	private get myPlayersTurn(): boolean {
 		if (this.playerDetails.player1 && this.game.playerOneTurn) {
 			return true;
@@ -254,10 +306,11 @@ export class GameBoardComponent {
 	private dealDamageAndUpdatedPlayers(you: IPlayingPlayer, opponent: IPlayingPlayer): IDamageDetails {
 		// tslint:disable-next-line
 		let results: IPlayingPlayer[] = [];
-		const crit: number = this.roll(13);
-		const magicDamage = you.magicDamage - opponent.magicResist;
-		const attackDamage = you.attackDamage - opponent.armorResist;
 		let totalDamage = 0;
+
+		const crit: number = this.totalCritDamage(this.critIncrease(you.items));
+		const magicDamage = this.totalMagicDamage(you) - this.totalMagicResist(opponent);
+		const attackDamage = this.totalAttackDamage(you) - this.totalArmor(opponent);
 
 		totalDamage = magicDamage + attackDamage + crit;
 
@@ -283,6 +336,59 @@ export class GameBoardComponent {
 			damageDealt: totalDamage,
 			playerDead: isDead,
 		};
+	}
+
+	private totalMagicDamage(player: IPlayingPlayer): number {
+		let extraMagicDamage = 0;
+		player.items.forEach((item) => {
+			if (item.magicDamage) {
+				extraMagicDamage += item.magicDamage;
+			}
+		});
+		return extraMagicDamage + player.magicDamage;
+	}
+
+	private totalAttackDamage(player: IPlayingPlayer): number {
+		let extraAttackDamage = 0;
+		player.items.forEach((item) => {
+			if (item.attackDamage) {
+				extraAttackDamage += item.attackDamage;
+			}
+		});
+		return extraAttackDamage + player.attackDamage;
+	}
+
+	private totalArmor(player: IPlayingPlayer): number {
+		let extraArmor = 0;
+		player.items.forEach((item) => {
+			if (item.armorResist) {
+				extraArmor += item.armorResist;
+			}
+		});
+		return extraArmor + player.armorResist;
+	}
+
+	private totalMagicResist(player: IPlayingPlayer): number {
+		let extraMagicResist = 0;
+		player.items.forEach((item) => {
+			if (item.magicResist) {
+				extraMagicResist += item.magicResist;
+			}
+		});
+		return extraMagicResist + player.magicResist;
+	}
+
+	private totalCritDamage(critBonus: number): number {
+		const ROLL = this.roll(13);
+
+		if (ROLL + critBonus >= 7) {
+			return this.roll(6);
+		}
+		return 0;
+	}
+
+	private critIncrease(items: IItem[]): number {
+		return items.filter((item) => item.critBonus).length;
 	}
 
 	private roll(max: number): number {

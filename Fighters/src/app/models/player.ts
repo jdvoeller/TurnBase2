@@ -1,3 +1,5 @@
+import { IItem } from './game/item';
+
 export interface IPlayer {
 	name: string;
 	winTag: string;
@@ -20,4 +22,9 @@ export interface IPlayingPlayer {
 	blocking: boolean;
 	blockAmount: number;
 	currency: number;
+	items: IItem[];
+}
+
+export interface IPlayerWithItems extends IPlayingPlayer {
+	crit: boolean;
 }

@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { IGame } from 'src/app/models/game/game';
-import { GameService } from 'src/app/services/gameService.service';
+
+import { IGame } from '../../../../models/game/game';
+import { GameService } from '../../../../services/gameService.service';
 import { IMessage } from '../../../../models/game/message';
 
 export interface IMessageData {

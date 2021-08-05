@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
-import { IGame } from 'src/app/models/game/game';
+
+import { IGame } from '../../../../models/game/game';
 import { GameService, IPersonalPlayerDetails } from '../../../../services/gameService.service';
 
 @Component({

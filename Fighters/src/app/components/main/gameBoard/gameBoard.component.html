@@ -28,7 +28,13 @@
 		<player-details [player]="myPlayer"
 			[showOtherData]="true"></player-details>
 		<h4>VS.</h4>
-		<player-details [player]="opponent"></player-details>
+		<ng-container *ngIf="showOtherPlayersDetails; else noRights">
+			<player-details [player]="opponent"
+				[showOtherData]="true"></player-details>
+		</ng-container>
+		<ng-template #noRights>
+			<player-details [player]="opponent"></player-details>
+		</ng-template>
 	</div>
 
 	<!-- GAME OVER -->

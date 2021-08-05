@@ -3,6 +3,7 @@
 		*ngFor="let item of shopItems">
 		<button mat-mini-fab
 			color="primary"
+			[disabled]="playerHasItem(item)"
 			(click)="openItem(item)">
 			<mat-icon>{{ item.icon }}</mat-icon>
 		</button>

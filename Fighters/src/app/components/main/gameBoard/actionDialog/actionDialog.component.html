@@ -38,7 +38,10 @@
 	<div mat-dialog-title
 		class="shop-title">
 		<h1>Shop</h1>
-		<h5>Currency: {{ player.currency }} gp</h5>
+		<div class="player-coins">
+			<h5>Coins: </h5>
+			<h5 class="coins">{{ player.currency }} gp</h5>
+		</div>
 	</div>
 	<div mat-dialog-content>
 		<shop [player]="player"></shop>

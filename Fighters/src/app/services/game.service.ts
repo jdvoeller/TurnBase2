@@ -6,13 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import { Collections, getCurrentEnvironment } from '../../environments/environment';
 import { IGame } from '../models/game/game';
 import { Phase } from '../models/game/phases';
-import { IPlayer, IPlayingPlayer } from '../models/player';
-
-export interface IPersonalPlayerDetails {
-	player: IPlayer;
-	gameId: string;
-	player1: boolean;
-}
+import { IPersonalPlayerDetails, IPlayer, IPlayingPlayer } from '../models/player';
 
 @Injectable()
 export class GameService {

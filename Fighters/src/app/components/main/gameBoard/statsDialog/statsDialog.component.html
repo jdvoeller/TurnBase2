@@ -14,13 +14,14 @@
 			</mat-form-field>
 		</ng-container>
 	</form>
-	<div class="button-container">
-		<button mat-raised-button
-			color="primary"
-			(click)="revert()">Revert</button>
-		<button mat-raised-button
-			color="primary"
-			[disabled]="!savable"
-			(click)="submit()">Submit</button>
-	</div>
+</div>
+<div mat-dialog-actions
+	class="button-container">
+	<button mat-raised-button
+		color="primary"
+		(click)="revert()">Revert</button>
+	<button mat-raised-button
+		color="primary"
+		[disabled]="!savable"
+		(click)="submit()">Submit</button>
 </div>

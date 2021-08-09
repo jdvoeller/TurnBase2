@@ -1,15 +1,18 @@
-<mat-card>
-	<mat-card-header>
-		<mat-card-title class="title-name">{{ player.player.name }}</mat-card-title>
-	</mat-card-header>
-	<mat-card-content>
-		<span>Health: {{ player?.health }}</span>
-		<mat-progress-bar [value]="player?.health"></mat-progress-bar>
-		<ng-container *ngIf="showOtherData">
-			<span>Attack Damage: {{ player?.attackDamage }}</span>
-			<span>Magic Damage: {{ player?.magicDamage }}</span>
-			<span>Armor: {{ player?.armorResist }}</span>
-			<span>Magic Resist: {{ player?.magicResist }}</span>
-		</ng-container>
-	</mat-card-content>
-</mat-card>
+<div class="detail-container">
+	<div class="title-name"
+		[ngClass]="myTurn ? 'active' : 'not-active' ">
+		{{ player.player.name }}
+		<div *ngIf="showOtherData"
+			class="button-container">
+			<button mat-mini-fab
+				(click)="openDetails()"
+				color="primary">
+				<mat-icon class="small-icon">info</mat-icon>
+			</button>
+		</div>
+	</div>
+	<mat-progress-bar [value]="player?.health" color="warn"></mat-progress-bar>
+	<div class="hp-text">
+		<span>HP: {{ player.health }}</span>
+	</div>
+</div>

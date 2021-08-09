@@ -6,7 +6,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
 
 import { StatsDialogComponent } from './statsDialog.component';
-import { GameService } from 'src/app/services/gameService.service';
+import { GameService } from 'src/app/services/game.service';
 
 @NgModule({
 	imports: [

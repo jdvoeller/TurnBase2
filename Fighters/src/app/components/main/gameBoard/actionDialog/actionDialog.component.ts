@@ -1,6 +1,15 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { IPlayingPlayer } from 'src/app/models/player';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+import { IGame } from '../../../../models/game/game';
+import { IPlayingPlayer } from '../../../../models/player';
+
+import { CheatMenuDialogComponent } from '../cheatMenu/cheatMenu.component';
+
+export interface IActionData {
+	player: IPlayingPlayer;
+	game: IGame;
+}
 
 @Component({
 	selector: 'action-dialog',
@@ -12,8 +21,9 @@ export class ActionDialogComponent {
 	public showShop = false;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public player: IPlayingPlayer,
-		public dialogRef: MatDialogRef<ActionDialogComponent>
+		@Inject(MAT_DIALOG_DATA) public actionData: IActionData,
+		public dialogRef: MatDialogRef<ActionDialogComponent>,
+		private dialog: MatDialog,
 	) {	}
 
 	public attack(): void {
@@ -26,5 +36,9 @@ export class ActionDialogComponent {
 
 	public earnCoin(): void {
 		this.dialogRef.close('coin');
+	}
+
+	public openCheatMenu(): void {
+		this.dialog.open(CheatMenuDialogComponent, { data: this.actionData });
 	}
 }

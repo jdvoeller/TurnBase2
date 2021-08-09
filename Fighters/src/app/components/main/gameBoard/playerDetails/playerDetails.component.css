@@ -1,24 +1,40 @@
-mat-card {
+.title-name {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
 	width: 180px;
-}
-
-mat-card mat-card-header .title-name {
-	font-weight: bold;
-}
-
-mat-card-header {
+	height: 40px;
 	border-left: 1px solid rgb(224, 224, 224);
 	border-top: 1px solid rgb(224, 224, 224);
 	box-shadow: 5px 6px rgb(219, 219, 219);
 	margin-bottom: 12px;
+	font-family: Copperplate,Copperplate Gothic Light,fantasy;
 }
 
-mat-card-content {
+.button-container {
+	transform: scale(.65);
+	align-self: flex-end;
+	margin: -8px;
+}
+
+.small-icon mat-icon {
+	transform: scale(.80);
+}
+
+.hp-text {
 	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
+	justify-content: flex-end;
+	margin-top: 4px;
 }
 
-mat-card-content span {
-	color: gray;
+.hp-text span {
+	font-size: 12px;
+}
+
+.active {
+	background-color: lawngreen;
+}
+
+.not-active {
+	background-color: indianred;
 }

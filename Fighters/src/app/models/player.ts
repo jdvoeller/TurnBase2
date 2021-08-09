@@ -1,5 +1,11 @@
 import { IItem } from './game/item';
 
+export interface IPersonalPlayerDetails {
+	player: IPlayer;
+	gameId: string;
+	player1: boolean;
+}
+
 export interface IPlayer {
 	name: string;
 	winTag: string;

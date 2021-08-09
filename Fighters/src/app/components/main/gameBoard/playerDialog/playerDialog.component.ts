@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
+import { IPersonalPlayerDetails } from '../../../../models/player';
 
 import { IGame } from '../../../../models/game/game';
-import { GameService, IPersonalPlayerDetails } from '../../../../services/gameService.service';
+import { GameService } from '../../../../services/game.service';
 
 @Component({
 	selector: 'player-dialog',

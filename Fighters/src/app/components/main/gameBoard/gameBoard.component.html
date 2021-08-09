@@ -25,16 +25,24 @@
 	<div *ngIf="game && game.gameStarted && allPlayersAlive"
 		class="fight-details">
 		<phase-stepper [stepperData]="stepperData"></phase-stepper>
-		<player-details [player]="myPlayer"
-			[showOtherData]="true"></player-details>
-		<h4>VS.</h4>
-		<ng-container *ngIf="showOtherPlayersDetails; else noRights">
-			<player-details [player]="opponent"
+		<div class="players-container">
+			<ng-container *ngIf="showOtherPlayersDetails; else noRights">
+				<player-details class="opponent-player"
+					[player]="opponent"
+					[myTurn]="!myTurn"
+					[showOtherData]="true"></player-details>
+			</ng-container>
+			<ng-template #noRights>
+				<player-details class="opponent-player"
+					[myTurn]="!myTurn"
+					[player]="opponent"></player-details>
+			</ng-template>
+			<h4>VS.</h4>
+			<player-details class="my-player"
+				[player]="myPlayer"
+				[myTurn]="myTurn"
 				[showOtherData]="true"></player-details>
-		</ng-container>
-		<ng-template #noRights>
-			<player-details [player]="opponent"></player-details>
-		</ng-template>
+		</div>
 	</div>
 
 	<!-- GAME OVER -->

@@ -1,0 +1,36 @@
+<div mat-dialog-content>
+	<div class="stats-container">
+		<div class="item-text-container">
+			<span>Attack Damage: {{ player?.attackDamage }}</span>
+			<span *ngIf="!!playerItemTotals.attackDamage"
+				class="extra">(+{{ playerItemTotals.attackDamage }})</span>
+		</div>
+		<div class="item-text-container">
+			<span>Magic Damage: {{ player?.magicDamage }}</span>
+			<span *ngIf="!!playerItemTotals.magicDamage"
+				class="extra">(+{{ playerItemTotals.magicDamage }})</span>
+		</div>
+		<div class="item-text-container">
+			<span>Armor: {{ player?.armorResist }}</span>
+			<span *ngIf="!!playerItemTotals.armorResist"
+				class="extra">(+{{ playerItemTotals.armorResist }})</span>
+		</div>
+		<div class="item-text-container">
+			<span>Magic Resist: {{ player?.magicResist }}</span>
+			<span *ngIf="!!playerItemTotals.magicResist"
+				class="extra">(+{{ playerItemTotals.magicResist }})</span>
+		</div>
+	</div>
+	<mat-divider></mat-divider>
+	<div class="item-container">
+		<div class="item"
+			*ngFor="let item of player.items">
+			<button mat-mini-fab
+				color="primary"
+				(click)="openDetails(item)">
+				<mat-icon>{{ item.icon }}</mat-icon>
+			</button>
+		</div>
+	</div>
+	<div></div>
+</div>

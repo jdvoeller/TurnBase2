@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule, MatDialogModule, MatIconModule } from '@angular/material';
+import { CheatMenuDialogComponent } from '../cheatMenu/cheatMenu.component';
+import { CheatMenuDialogModule } from '../cheatMenu/cheatMenu.module';
 import { ShopModule } from '../shop/shop.module';
 
 import { ActionDialogComponent } from './actionDialog.component';
@@ -13,8 +15,10 @@ import { ActionDialogComponent } from './actionDialog.component';
 		MatIconModule,
 
 		ShopModule,
+		CheatMenuDialogModule,
 	],
 	exports: [ActionDialogComponent],
 	declarations: [ActionDialogComponent],
+	entryComponents: [CheatMenuDialogComponent],
 })
 export class ActionDialogModule { }

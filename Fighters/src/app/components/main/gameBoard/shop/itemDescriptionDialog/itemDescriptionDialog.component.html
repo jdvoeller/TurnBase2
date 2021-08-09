@@ -1,12 +1,14 @@
 <div mat-dialog-title
 	class="title">
-	<mat-icon>{{ data.item.icon }}</mat-icon>
+	<mat-icon color="accent">{{ data.item.icon }}</mat-icon>
+	<h5>{{ data.item.name }}</h5>
 </div>
 <div mat-dialog-content>
 	Description:
 	<span>{{ data.item.description }}</span>
 </div>
-<mat-dialog-actions align="end">
+<mat-dialog-actions *ngIf="!data.hideActions"
+	align="end">
 	<button mat-raised-button
 		color="warn"
 		(click)="matDialogRef.close()">Cancel</button>

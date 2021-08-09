@@ -40,3 +40,10 @@
 .coins {
 	color: gold;
 }
+
+.cheat-div {
+	background-color: lawngreen;
+	width: 20px;
+	height: 20px;
+	margin: auto;
+}

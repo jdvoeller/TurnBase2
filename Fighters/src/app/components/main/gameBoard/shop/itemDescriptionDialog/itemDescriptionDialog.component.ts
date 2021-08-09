@@ -7,6 +7,7 @@ import { IItem } from '../../../../../models/game/item';
 export interface IItemDescriptionData {
 	item: IItem;
 	player: IPlayingPlayer;
+	hideActions?: boolean;
 }
 @Component({
 	selector: 'item-description-dialog',

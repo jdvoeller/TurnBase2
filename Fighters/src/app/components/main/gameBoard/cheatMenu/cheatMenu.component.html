@@ -1,0 +1,42 @@
+<div mat-dialog-title>
+	CHEAT MENU
+</div>
+<div mat-dialog-content>
+	<form [formGroup]="form">
+		<mat-form-field>
+			<mat-label>Attack Damage</mat-label>
+			<input matInput
+				type="number"
+				formControlName="attackDamage">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Magic Damage</mat-label>
+			<input matInput
+				type="number"
+				formControlName="magicDamage">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Armor Resist</mat-label>
+			<input matInput
+				type="number"
+				formControlName="armorResist">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Magic Resist</mat-label>
+			<input matInput
+				type="number"
+				formControlName="magicResist">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Health</mat-label>
+			<input matInput
+				type="number"
+				formControlName="health">
+		</mat-form-field>
+	</form>
+	<div mat-dialog-actions align="end">
+		<button mat-raised-button
+			color="accent"
+			(click)="updateStats()">CHEAT</button>
+	</div>
+</div>

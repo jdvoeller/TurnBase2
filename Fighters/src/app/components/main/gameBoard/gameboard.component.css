@@ -120,3 +120,21 @@ button {
 	font-size: 12px;
 	margin-top: 8px;
 }
+
+.players-container {
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+}
+
+.players-container h4 {
+	align-self: center;
+}
+
+.opponent-player {
+	align-self: flex-end;
+}
+
+.my-player {
+	align-self: flex-start;
+}

@@ -1,0 +1,31 @@
+.stats-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-end;
+}
+
+.item-container {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.item-text-container {
+	display: flex;
+	align-items: center;
+}
+
+.extra {
+	color: green;
+	font-size: 10px;
+}
+
+.item {
+	margin: 6px;
+}
+
+mat-divider {
+	margin: 6px;
+}

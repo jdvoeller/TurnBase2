@@ -1,4 +1,5 @@
 import { IPlayingPlayer } from '../player';
+import { GAME_ITEMS } from './item';
 import { IMessage } from './message';
 import { Phase } from './phases';
 
@@ -28,7 +29,7 @@ export const MOCK_GAME_DATA: IGame = {
 	players: [
 		{
 			player: {
-				name: 'testPlayer',
+				name: 'Jordan',
 				winTag: 'yay!',
 				lossTag: 'nooooooo',
 				id: 'playerId'
@@ -43,11 +44,11 @@ export const MOCK_GAME_DATA: IGame = {
 			blocking: false,
 			blockAmount: 0,
 			currency: 0,
-			items: []
+			items: GAME_ITEMS,
 		},
 		{
 			player: {
-				name: 'testPlayer2',
+				name: 'Brittney',
 				winTag: 'yay!',
 				lossTag: 'nooooooo',
 				id: 'playerId2'

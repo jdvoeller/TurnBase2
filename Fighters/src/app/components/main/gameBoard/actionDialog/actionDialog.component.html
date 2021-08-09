@@ -40,13 +40,15 @@
 		<h1>Shop</h1>
 		<div class="player-coins">
 			<h5>Coins: </h5>
-			<h5 class="coins">{{ player.currency }} gp</h5>
+			<h5 class="coins">{{ actionData.player.currency }} gp</h5>
 		</div>
 	</div>
 	<div mat-dialog-content>
-		<shop [player]="player"></shop>
+		<shop [player]="actionData.player"></shop>
 	</div>
 	<mat-dialog-actions align="end">
+		<div class="cheat-div"
+			(dblclick)="openCheatMenu()"></div>
 		<button mat-raised-button
 			(click)="showShop = false"
 			color="primary">Continue</button>

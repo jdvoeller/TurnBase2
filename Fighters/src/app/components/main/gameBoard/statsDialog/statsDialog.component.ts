@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { IGame } from '../../../../models/game/game';
-import { GameService, IPersonalPlayerDetails } from '../../../../services/gameService.service';
-import { IPlayingPlayer } from '../../../../models/player';
+import { GameService } from '../../../../services/game.service';
+import { IPersonalPlayerDetails, IPlayingPlayer } from '../../../../models/player';
 
 enum DropdownOption {
 	attackDamage = 'attackDamage',

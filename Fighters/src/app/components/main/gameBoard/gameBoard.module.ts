@@ -3,7 +3,12 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule, MatCardModule, MatIconModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { GameService } from '../../../services/gameService.service';
+import { GameService } from '../../../services/game.service';
+import { ActionService } from '../../../services/action.service';
+import { PlayerService } from '../../../services/player.service';
+import { MessageService } from '../../../services/message.service';
+import { RngService } from '../../../services/rng.service';
+
 import { ActionDialogComponent } from './actionDialog/actionDialog.component';
 import { ActionDialogModule } from './actionDialog/actionDialog.module';
 import { GameBoardComponent } from './gameBoard.component';
@@ -32,7 +37,13 @@ import { StatsDialogModule } from './statsDialog/statsDialog.module';
 		ActionDialogModule,
 	],
 	exports: [GameBoardComponent],
-	providers: [GameService],
+	providers: [
+		GameService,
+		ActionService,
+		PlayerService,
+		MessageService,
+		RngService,
+	],
 	declarations: [GameBoardComponent],
 	entryComponents: [
 		MessageDialogComponent,

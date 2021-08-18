@@ -42,21 +42,30 @@ export class ActionService {
 			gameOver: dealDamage.playerDead,
 		};
 
-		this.gameService.updateGame(updatedGame).then(() => {
-			const deadPlayer = updatedGame.players.filter((player) => player.dead);
-			if (deadPlayer.length) {
-				this.messageService.sendMessage(`${deadPlayer[0].player.name} is DEAD!`, updatedGame,
-					playerDetails);
-			} else {
-				this.messageService.sendMessage(`
-					${opponent.player.name} took ${dealDamage.damageDealt > 0 ?
-						dealDamage.damageDealt.toString() : 0} damage!`,
-						updatedGame, playerDetails);
-			}
-		});
+		const deadPlayer = updatedGame.players.filter((player) => player.dead);
+		const message: string = deadPlayer.length ? `${opponent.player.name} took ${dealDamage.damageDealt} damage and died!!! SWEET VICTORY FOR ${myPlayer.player.name}!!` : `${opponent.player.name} took ${dealDamage.damageDealt} damage!`;
+
+		this.updateGame(updatedGame, true, message, playerDetails);
 	}
 
-	public earnCoin(myPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails, showMessage = true) {
+	public buyItem(game: IGame, item: IItem, playerId: string): void {
+		const updatedPlayers: IPlayingPlayer[] = game.players.map((player) => {
+			if (player.id === playerId) {
+				player.items.push(item);
+				player.currency -= item.cost;
+			}
+			return player;
+		});
+
+		const updatedGame: IGame = {
+			...game,
+			players: updatedPlayers,
+		};
+
+		this.updateGame(updatedGame, false);
+	}
+
+	public earnCoin(myPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails) {
 		const updatedPlayers: IPlayingPlayer[] = game.players.map((player) => {
 			if (player.id === myPlayer.id) {
 				player.currency += 1;
@@ -75,11 +84,9 @@ export class ActionService {
 			players: updatedPlayers
 		};
 
-		this.gameService.updateGame(updatedGame).then(() => {
-			if (showMessage) {
-				this.messageService.sendMessage(`${myPlayer.player.name} earned a coin!`, updatedGame, playerDetails);
-			}
-		});
+		const message = `${myPlayer.player.name} earned a coin!`;
+
+		this.updateGame(updatedGame, true, message, playerDetails);
 	}
 
 	public block(myPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails) {
@@ -103,15 +110,16 @@ export class ActionService {
 			playerOneTurn: !game.playerOneTurn,
 		};
 
-		this.gameService.updateGame(updatedGame).then(() => {
-			this.messageService.sendMessage(`${myPlayer.player.name} blocks!`, updatedGame, playerDetails);
-		});
+		const message = `${myPlayer.player.name} blocks!`;
+
+		this.updateGame(updatedGame, true, message, playerDetails);
 	}
 
-	public healPlayer(healAmount: number, myPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails): void {
+	public healPlayer(healAmount: number, itemCost: number, myPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails): void {
 		const updatedPlayers: IPlayingPlayer[] = game.players.map((player) => {
 			if (player.id === myPlayer.id) {
 				player.health += healAmount;
+				player.currency -= itemCost;
 			}
 			return player;
 		});
@@ -122,9 +130,10 @@ export class ActionService {
 			players: updatedPlayers
 		};
 
-		this.gameService.updateGame(updatedGame).then(() => {
-			this.messageService.sendMessage(`${myPlayer.player.name} healed ${healAmount} hp!`,	updatedGame, playerDetails);
-		});
+		const message = `${myPlayer.player.name} healed ${healAmount} hp!`;
+
+		this.updateGame(updatedGame, true, message, playerDetails);
+
 	}
 
 	private dealDamageAndUpdatedPlayers(you: IPlayingPlayer, opponent: IPlayingPlayer): IDamageDetails {
@@ -167,5 +176,24 @@ export class ActionService {
 
 	private critIncrease(items: IItem[]): number {
 		return items.filter((item) => item.critBonus).length;
+	}
+
+	private updateGame(updatedGame: IGame, earnCoin: boolean = true, message?: string, myPlayerDetails?: IPersonalPlayerDetails) {
+		if (earnCoin && myPlayerDetails) {
+			const updatedPlayers: IPlayingPlayer[] = updatedGame.players.map((player) => {
+				if (player.id === myPlayerDetails.player.id) {
+					player.currency += 1;
+				}
+				return player;
+			});
+
+			updatedGame.players = updatedPlayers;
+		}
+
+		this.gameService.updateGame(updatedGame).then(() => {
+			if (message) {
+				this.messageService.sendMessage(message, updatedGame, myPlayerDetails);
+			}
+		});
 	}
 }

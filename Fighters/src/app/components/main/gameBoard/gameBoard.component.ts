@@ -59,6 +59,22 @@ export class GameBoardComponent {
 		return true;
 	}
 
+	public get stepperData(): IPhaseStepperData {
+		return {
+			activeStep: this.game.phase,
+			playerOneTurn: this.game.playerOneTurn
+		};
+	}
+
+	private get myPlayersTurn(): boolean {
+		if (this.playerDetails.player1 && this.game.playerOneTurn) {
+			return true;
+		} else if (!this.playerDetails.player1 && !this.game.playerOneTurn) {
+			return true;
+		}
+		return false;
+	}
+
 	public get myTurn(): boolean {
 		return this.game.gameStarted && !this.disableActions;
 	}
@@ -158,41 +174,13 @@ export class GameBoardComponent {
 					// Player bought something
 					const newItem = (data as IItem);
 					if (newItem.name === ItemNames.healthPotion) {
-						this.actionService.healPlayer(newItem.health, this.myPlayer, this.game, this.playerDetails);
+						this.actionService.healPlayer(newItem.health, newItem.cost, this.myPlayer, this.game, this.playerDetails);
 					} else {
-						const updatedPlayers: IPlayingPlayer[] = this.game.players.map((player) => {
-							if (player.id === this.myPlayer.id) {
-								player.items.push(newItem);
-								player.currency -= newItem.cost;
-							}
-							return player;
-						});
-
-						const updatedGame: IGame = {
-							...this.game,
-							players: updatedPlayers,
-						};
-						this.gameService.updateGame(updatedGame);
+						this.actionService.buyItem(this.game, newItem, this.myPlayer.id);
 					}
 				}
 			}
 		});
-	}
-
-	public get stepperData(): IPhaseStepperData {
-		return {
-			activeStep: this.game.phase,
-			playerOneTurn: this.game.playerOneTurn
-		};
-	}
-
-	private get myPlayersTurn(): boolean {
-		if (this.playerDetails.player1 && this.game.playerOneTurn) {
-			return true;
-		} else if (!this.playerDetails.player1 && !this.game.playerOneTurn) {
-			return true;
-		}
-		return false;
 	}
 
 	private openStatsDialog(): void {

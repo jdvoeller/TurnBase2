@@ -8,6 +8,7 @@ export interface IItemDescriptionData {
 	item: IItem;
 	player: IPlayingPlayer;
 	hideActions?: boolean;
+	canAction: boolean;
 }
 @Component({
 	selector: 'item-description-dialog',

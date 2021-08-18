@@ -31,16 +31,16 @@ export class GameBoardComponent {
 		private gameService: GameService,
 		private actionService: ActionService,
 	) {
-		this.showStartDialog();
+		// this.showStartDialog();
 
 		// TESTING ACTIONS
-		// this.game = MOCK_GAME_DATA;
-		// this.playerDetails = {
-		// 	player: this.game.players[0].player,
-		// 	player1: true,
-		// 	gameId: this.game.id,
-		// };
-		// this.openActions();
+		this.game = MOCK_GAME_DATA;
+		this.playerDetails = {
+			player: this.game.players[0].player,
+			player1: true,
+			gameId: this.game.id,
+		};
+		this.openActions();
 
 		setInterval(() => {
 			if (this.game) {
@@ -50,15 +50,6 @@ export class GameBoardComponent {
 		}, 250);
 	}
 
-	public get disableActions(): boolean {
-		if (!this.game || !(this.game && this.game.gameStarted) || !this.allPlayersAlive) {
-			return true;
-		} else if (this.myPlayersTurn) {
-			return false;
-		}
-		return true;
-	}
-
 	public get stepperData(): IPhaseStepperData {
 		return {
 			activeStep: this.game.phase,
@@ -66,17 +57,18 @@ export class GameBoardComponent {
 		};
 	}
 
-	private get myPlayersTurn(): boolean {
-		if (this.playerDetails.player1 && this.game.playerOneTurn) {
-			return true;
-		} else if (!this.playerDetails.player1 && !this.game.playerOneTurn) {
+	public get myTurn(): boolean {
+		if (this.game.playerOneTurn) {
+			if (this.playerDetails.player1) {
+				return true;
+			}
+			return false;
+		} else {
+			if (this.playerDetails.player1) {
+				return false;
+			}
 			return true;
 		}
-		return false;
-	}
-
-	public get myTurn(): boolean {
-		return this.game.gameStarted && !this.disableActions;
 	}
 
 	public get myPlayer(): IPlayingPlayer {
@@ -104,14 +96,14 @@ export class GameBoardComponent {
 	}
 
 	public get showShareId(): boolean {
-		return !!this.id && (this.game && !this.game.gameStarted  && !this.game.player1PickedStats) &&
+		return !!this.id && (!this.gameStarted  && (this.game && !this.game.player1PickedStats)) &&
 			this.playerDetails.player1;
 	}
 
 	public get showOpponentSelecting(): boolean {
-		return this.game && !this.game.gameStarted && !this.game.player1PickedStats &&
-			!this.playerDetails.player1 || this.game && !this.game.gameStarted &&
-			this.game.player1PickedStats && this.playerDetails.player1;
+		return !this.gameStarted && (this.game && !this.game.player1PickedStats) &&
+			!this.playerDetails.player1 || !this.gameStarted &&
+			(this.game && this.game.player1PickedStats) && this.playerDetails.player1;
 	}
 
 	public get isStatsDialogOpen(): boolean {
@@ -147,7 +139,7 @@ export class GameBoardComponent {
 	public listenToGame(id: string) {
 		this.gameService.listenToGame(id).subscribe((game: IGame) => {
 			this.game = game;
-			if (!game.gameStarted && game.players.length > 1) {
+			if (!this.gameStarted && game.players.length > 1) {
 				if (this.playerDetails.player1 && !this.game.player1PickedStats) {
 					this.openStatsDialog();
 				} else if (!this.playerDetails.player1 && this.game.player1PickedStats) {
@@ -162,6 +154,7 @@ export class GameBoardComponent {
 			data: {
 				player: this.myPlayer,
 				game: this.game,
+				canAction: this.myTurn,
 			},
 			width: '300px',
 		}).afterClosed().subscribe((data) => {
@@ -181,6 +174,10 @@ export class GameBoardComponent {
 				}
 			}
 		});
+	}
+
+	private get gameStarted(): boolean {
+		return this.game && this.game.gameStarted;
 	}
 
 	private openStatsDialog(): void {

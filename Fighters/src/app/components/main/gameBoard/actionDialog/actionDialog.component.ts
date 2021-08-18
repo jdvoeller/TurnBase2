@@ -9,6 +9,7 @@ import { CheatMenuDialogComponent } from '../cheatMenu/cheatMenu.component';
 export interface IActionData {
 	player: IPlayingPlayer;
 	game: IGame;
+	canAction: boolean;
 }
 
 @Component({

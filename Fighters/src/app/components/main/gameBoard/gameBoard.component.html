@@ -77,7 +77,6 @@
 	<mat-card>
 		<button mat-raised-button
 			color="primary"
-			[disabled]="disableActions"
 			(click)="openActions()">Actions</button>
 		<button [disabled]="!game"
 			mat-mini-fab
@@ -87,7 +86,7 @@
 		</button>
 		<button mat-raised-button
 			color="primary"
-			[disabled]="disableActions || this.game.phase !== 'block'"
+			[disabled]="true"
 			(click)="block()">Block</button>
 	</mat-card>
 </div>

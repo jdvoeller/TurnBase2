@@ -25,6 +25,7 @@ export class PlayerDetailsDialogComponent {
 			item,
 			player: this.player,
 			hideActions: true,
+			canAction: false,
 		};
 
 		this.dialog.open(ItemDescriptionDialogComponent, { data: DATA });

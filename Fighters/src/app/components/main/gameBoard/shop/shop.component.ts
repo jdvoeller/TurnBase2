@@ -14,6 +14,7 @@ import { IItemDescriptionData, ItemDescriptionDialogComponent } from './itemDesc
 
 export class ShopComponent {
 	@Input() public player: IPlayingPlayer;
+	@Input() public canAction = false;
 	public shopItems: IItem[] = GAME_ITEMS;
 
 	constructor(
@@ -25,6 +26,7 @@ export class ShopComponent {
 		const ITEM_DESCRIPTION_DATA: IItemDescriptionData = {
 			item: item,
 			player: this.player,
+			canAction: this.canAction,
 		};
 
 		this.dialog.open(ItemDescriptionDialogComponent, { data: ITEM_DESCRIPTION_DATA }).afterClosed().subscribe((data) => {

@@ -14,6 +14,6 @@
 		(click)="matDialogRef.close()">Cancel</button>
 	<button mat-raised-button
 		color="accent"
-		[disabled]="data.player.currency < data.item.cost"
+		[disabled]="!data.canAction || data.player.currency < data.item.cost"
 		(click)="buy()">Buy {{ data.item.cost }}gp</button>
 </mat-dialog-actions>

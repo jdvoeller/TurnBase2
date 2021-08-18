@@ -47,3 +47,7 @@
 	height: 20px;
 	margin: auto;
 }
+
+.center-text {
+	text-align: center;
+}

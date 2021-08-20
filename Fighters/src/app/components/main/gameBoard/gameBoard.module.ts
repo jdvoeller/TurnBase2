@@ -20,6 +20,8 @@ import { PlayerDialogComponent } from './playerDialog/playerDialog.component';
 import { PlayerDialogModule } from './playerDialog/playerDialog.module';
 import { StatsDialogComponent } from './statsDialog/statsDialog.component';
 import { StatsDialogModule } from './statsDialog/statsDialog.module';
+import { YourTurnDialogModule } from '../yourTurnDialog/yourTurnDialog.module';
+import { YourTurnDialogComponent } from '../yourTurnDialog/yourTurnDialog.component';
 
 @NgModule({
 	imports: [
@@ -35,6 +37,7 @@ import { StatsDialogModule } from './statsDialog/statsDialog.module';
 		PlayerDetailsModule,
 		PhaseStepperModule,
 		ActionDialogModule,
+		YourTurnDialogModule,
 	],
 	exports: [GameBoardComponent],
 	providers: [
@@ -50,6 +53,7 @@ import { StatsDialogModule } from './statsDialog/statsDialog.module';
 		PlayerDialogComponent,
 		StatsDialogComponent,
 		ActionDialogComponent,
+		YourTurnDialogComponent,
 	],
 })
 export class GameBoardModule { }

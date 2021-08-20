@@ -1,0 +1,23 @@
+<div mat-dialog-title>It is your turn!</div>
+<div mat-dialog-content
+	class="main-container">
+	<div class="container">
+		<span class="action">"Close All":</span>
+		<span class="detail">Close all dialogs and start turn</span>
+	</div>
+	<div class="container">
+		<span class="action">"Close":</span>
+		<span class="detail">Close this dialog and return to previous dialog</span>
+	</div>
+</div>
+<div mat-dialog-actions align="end">
+	<button mat-button color="primary"
+		(click)="dialogRef.close()">
+		Close
+	</button>
+	<button mat-raised-button
+		color="primary"
+		(click)="closeAll()">
+		Close All
+	</button>
+</div>

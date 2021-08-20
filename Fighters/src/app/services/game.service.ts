@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { Collections, getCurrentEnvironment } from '../../environments/environment';
 import { IGame } from '../models/game/game';
@@ -74,12 +74,13 @@ export class GameService {
 		if (game.players.length < 2) {
 			allPlayers.push(this.createPlayingPlayerObj(updatedPlayer));
 			return this.db.collection(this.ENVIRONMENT).get().pipe(
+				tap((data) => console.log(data)),
 				map((data) => data.docs.filter((doc) => doc.data().id === id)[0]),
 				tap((data) => {
 					this.db.collection(this.ENVIRONMENT).doc(id).set({
 						...data.data(),
 						players: allPlayers,
-					});
+					}).catch((err) => console.log(err));
 				}),
 				map(() => {
 					const playerObj: IPersonalPlayerDetails = {

@@ -12,6 +12,7 @@ import { IPhaseStepperData } from './phaseStepper/phaseStepper.component';
 import { PlayerDialogComponent } from './playerDialog/playerDialog.component';
 import { StatsDialogComponent } from './statsDialog/statsDialog.component';
 import { ActionService } from 'src/app/services/action.service';
+import { YourTurnDialogComponent } from '../yourTurnDialog/yourTurnDialog.component';
 
 @Component({
 	selector: 'game-board',
@@ -26,21 +27,23 @@ export class GameBoardComponent {
 	public showStartGameButton = false;
 	public isLoading =  false;
 
+	public canShowYourTurnDialog = false;
+
 	constructor(
 		private dialog: MatDialog,
 		private gameService: GameService,
 		private actionService: ActionService,
 	) {
-		// this.showStartDialog();
+		this.showStartDialog();
 
 		// TESTING ACTIONS
-		this.game = MOCK_GAME_DATA;
-		this.playerDetails = {
-			player: this.game.players[0].player,
-			player1: true,
-			gameId: this.game.id,
-		};
-		this.openActions();
+		// this.game = MOCK_GAME_DATA;
+		// this.playerDetails = {
+		// 	player: this.game.players[0].player,
+		// 	player1: true,
+		// 	gameId: this.game.id,
+		// };
+		// this.openActions();
 
 		setInterval(() => {
 			if (this.game) {
@@ -146,6 +149,17 @@ export class GameBoardComponent {
 					this.openStatsDialog();
 				}
 			}
+
+			if (this.gameStarted && this.dialog.openDialogs.length &&
+					!this.dialog.getDialogById('statsDialog') && !this.dialog.getDialogById('yourTurnDialog')) {
+				this.dialog.open(YourTurnDialogComponent, {
+					id: 'yourTurnDialog',
+				}).afterClosed().subscribe((data) => {
+					if (data) {
+						this.dialog.closeAll();
+					}
+				});
+			}
 		});
 	}
 
@@ -155,6 +169,7 @@ export class GameBoardComponent {
 				player: this.myPlayer,
 				game: this.game,
 				canAction: this.myTurn,
+				id: 'actionDialog'
 			},
 			width: '300px',
 		}).afterClosed().subscribe((data) => {
@@ -185,7 +200,7 @@ export class GameBoardComponent {
 			width: '300px',
 			maxWidth: '300px',
 			disableClose: true,
-			id: 'statDialog',
+			id: 'statsDialog',
 			data: {
 				game: this.game,
 				playerDetails: this.playerDetails,

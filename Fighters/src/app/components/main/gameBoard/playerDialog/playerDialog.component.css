@@ -21,3 +21,14 @@ form {
 .game-id {
 	width: 100%;
 }
+
+.error-red {
+	font-weight: bold;
+	color: red;
+	font-size: 10px;
+}
+
+.error-container {
+	display: flex;
+	flex-direction: column;
+}

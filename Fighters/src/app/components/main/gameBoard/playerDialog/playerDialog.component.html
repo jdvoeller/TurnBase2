@@ -35,6 +35,11 @@
 						formControlName="gameId">
 				</mat-form-field>
 			</div>
+			<div *ngIf="showIdError"
+				class="error-container">
+				<span class="error-red">Please check your game ID and try again.</span>
+				<span class="error-red">If issue persists create a new game.</span>
+			</div>
 		</form>
 	</div>
 

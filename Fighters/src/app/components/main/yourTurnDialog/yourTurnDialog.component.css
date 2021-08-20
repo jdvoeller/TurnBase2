@@ -1,0 +1,11 @@
+.container {
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	height: 60px;
+}
+
+.detail {
+	font-size: 10px;
+	margin-left: 12px;
+}

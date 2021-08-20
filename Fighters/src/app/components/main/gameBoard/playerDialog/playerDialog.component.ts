@@ -16,6 +16,7 @@ export class PlayerDialogComponent {
 	public createMatch = false;
 	public joinMatch = false;
 	public form: FormGroup;
+	public showIdError = false;
 
 	constructor(
 		private dialogRef: MatDialogRef<PlayerDialogComponent>,
@@ -46,25 +47,31 @@ export class PlayerDialogComponent {
 			this.gameService.setupGame(this.form.value).subscribe((details) => this.dialogRef.close(details));
 		} else if (this.joinMatch) {
 			this.gameService.getGame(this.form.get('gameId').value).subscribe((data: IGame) => {
-				const game: IGame = {
-					...data,
-					id: data.id,
-				};
+				if (data) {
+					this.showIdError = false;
+					const game: IGame = {
+						...data,
+						id: data.id,
+					};
 
-				const joinDetails: IPersonalPlayerDetails = {
-					player: {
-						name: this.form.get('name').value,
-						winTag: this.form.get('winTag').value,
-						lossTag: this.form.get('lossTag').value,
-						id: '',
-					},
-					gameId: data.id,
-					player1: false,
-				};
+					const joinDetails: IPersonalPlayerDetails = {
+						player: {
+							name: this.form.get('name').value,
+							winTag: this.form.get('winTag').value,
+							lossTag: this.form.get('lossTag').value,
+							id: '',
+						},
+						gameId: data.id,
+						player1: false,
+					};
 
-				this.gameService.joinGame(game.id, game, joinDetails).subscribe((details: any) => {
-					this.dialogRef.close(details);
-				});
+					this.gameService.joinGame(game.id, game, joinDetails).subscribe((details: any) => {
+						console.log(details);
+						this.dialogRef.close(details);
+					});
+				} else {
+					this.showIdError = true;
+				}
 			});
 		}
 	}

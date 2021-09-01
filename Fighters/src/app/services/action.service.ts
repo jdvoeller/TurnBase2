@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { IGame } from '../models/game/game';
 import { IItem, IItemTotals, ItemNames } from '../models/game/item';
+import { Phase } from '../models/game/phases';
 import { IPersonalPlayerDetails, IPlayingPlayer } from '../models/player';
 
 import { GameService } from './game.service';
@@ -26,8 +27,29 @@ export class ActionService {
 		private rngService: RngService,
 	) { }
 
-	public attack(myPlayer: IPlayingPlayer, opponent: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails): void {
-		const dealDamage: IDamageDetails = this.dealDamageAndUpdatedPlayers(myPlayer, opponent);
+	public initiateAttack(attackingPlayer: IPlayingPlayer, attackedPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails) {
+		// check how much damage. let defending player know how much damage they are going to take
+		// if player blocks, that is their turn.
+		// if player doesn't block it's their turn to attack/action
+
+		const updatedWithPhase: IGame = {
+			...game,
+			phase: Phase.block,
+			playerOneTurn: !game.playerOneTurn
+		};
+
+		const message = `${attackingPlayer.player.name} is about to deal damage! Will ${attackedPlayer.player.name} block?`;
+
+		this.updateGame(updatedWithPhase, true, message, playerDetails);
+	}
+
+	public attack(attackingPlayer: IPlayingPlayer, attackedPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails, blocking = false): void {
+		if (blocking) {
+			const BASE_BLOCK = 5;
+			attackedPlayer.blocking = true;
+			attackedPlayer.blockAmount = BASE_BLOCK + this.rngService.roll(10);
+		}
+		const dealDamage: IDamageDetails = this.dealDamageAndUpdatedPlayers(attackingPlayer, attackedPlayer);
 		const updatedPlayers: IPlayingPlayer[] = dealDamage.players.map((player) => {
 			if (this.playerService.playerHasItem(ItemNames.xRayPeak, player)) {
 				player.items = player.items.filter((item: IItem) => item.name !== ItemNames.xRayPeak);
@@ -40,10 +62,12 @@ export class ActionService {
 			players: updatedPlayers,
 			playerOneTurn: !game.playerOneTurn,
 			gameOver: dealDamage.playerDead,
+			phase: Phase.attack
 		};
 
 		const deadPlayer = updatedGame.players.filter((player) => player.dead);
-		const message: string = deadPlayer.length ? `${opponent.player.name} took ${dealDamage.damageDealt} damage and died!!! SWEET VICTORY FOR ${myPlayer.player.name}!!` : `${opponent.player.name} took ${dealDamage.damageDealt} damage!`;
+		const message: string = deadPlayer.length ? `${attackedPlayer.player.name} took ${dealDamage.damageDealt} damage and died!!! SWEET VICTORY FOR ${attackingPlayer.player.name}!!` :
+			`${attackedPlayer.player.name} took ${dealDamage.damageDealt < 0 ? 0 : dealDamage.damageDealt} damage!`;
 
 		this.updateGame(updatedGame, true, message, playerDetails);
 	}
@@ -89,31 +113,6 @@ export class ActionService {
 		this.updateGame(updatedGame, true, message, playerDetails);
 	}
 
-	public block(myPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails) {
-		const blockAmount = this.rngService.roll(10);
-		// Great block
-		// if (blockAmount > 8) {
-		// 	blockAmount += 2;
-		// }
-
-		const updatedPlayers: IPlayingPlayer[] = game.players.map((player) => {
-			if (player.id === myPlayer.id) {
-				player.blockAmount = blockAmount;
-				player.blocking = true;
-			}
-			return player;
-		});
-
-		const updatedGame: IGame = {
-			...game,
-			players: updatedPlayers,
-			playerOneTurn: !game.playerOneTurn,
-		};
-
-		const message = `${myPlayer.player.name} blocks!`;
-
-		this.updateGame(updatedGame, true, message, playerDetails);
-	}
 
 	public healPlayer(healAmount: number, itemCost: number, myPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails): void {
 		const updatedPlayers: IPlayingPlayer[] = game.players.map((player) => {

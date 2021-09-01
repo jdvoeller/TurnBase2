@@ -22,6 +22,8 @@ import { StatsDialogComponent } from './statsDialog/statsDialog.component';
 import { StatsDialogModule } from './statsDialog/statsDialog.module';
 import { YourTurnDialogModule } from '../yourTurnDialog/yourTurnDialog.module';
 import { YourTurnDialogComponent } from '../yourTurnDialog/yourTurnDialog.component';
+import { BlockingDialogModule } from './blockingDialog/blockingDialog.module';
+import { BlockingDialogComponent } from './blockingDialog/blockingDialog.component';
 
 @NgModule({
 	imports: [
@@ -38,6 +40,7 @@ import { YourTurnDialogComponent } from '../yourTurnDialog/yourTurnDialog.compon
 		PhaseStepperModule,
 		ActionDialogModule,
 		YourTurnDialogModule,
+		BlockingDialogModule,
 	],
 	exports: [GameBoardComponent],
 	providers: [
@@ -54,6 +57,7 @@ import { YourTurnDialogComponent } from '../yourTurnDialog/yourTurnDialog.compon
 		StatsDialogComponent,
 		ActionDialogComponent,
 		YourTurnDialogComponent,
+		BlockingDialogComponent,
 	],
 })
 export class GameBoardModule { }

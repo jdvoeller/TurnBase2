@@ -5,7 +5,7 @@ import { UserSettingsComponent } from './userSettings/userSettings.component';
 import { TestGameComponent } from './testGame/testGame.component';
 
 export const routes: Routes = [
-	{ path: '', redirectTo: '/userSettings', pathMatch: 'full' },
+	{ path: '', redirectTo: '/testGame', pathMatch: 'full' },
 	{ path: 'userSettings', component: UserSettingsComponent },
 	{ path: 'testGame', component: TestGameComponent },
 ];

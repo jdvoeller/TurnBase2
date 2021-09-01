@@ -43,7 +43,7 @@ export const MOCK_GAME_DATA: IGame = {
 			id: 'playerId',
 			blocking: false,
 			blockAmount: 0,
-			currency: 0,
+			currency: 1000,
 			items: GAME_ITEMS,
 		},
 		{
@@ -62,7 +62,7 @@ export const MOCK_GAME_DATA: IGame = {
 			id: 'playerId2',
 			blocking: false,
 			blockAmount: 0,
-			currency: 0,
+			currency: 1000,
 			items: []
 		},
 	],

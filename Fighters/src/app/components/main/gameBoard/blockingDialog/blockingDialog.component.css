@@ -1,0 +1,23 @@
+:host {
+	text-align: center;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.actions {
+	display: flex;
+	flex-direction: column;
+}
+
+.actions .action-buttons {
+	display: flex;
+	justify-content: space-between;
+}
+
+.actions .shop {
+	align-self: center;
+}

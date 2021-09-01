@@ -1,0 +1,26 @@
+<div mat-dialog-title>
+	Will you block?
+</div>
+<div class="content"
+	mat-dialog-content>
+	<span>Blocking stops some or all of the damage from going through.</span>
+	----------------
+	<span>If you choose to block you will not be able to attack this turn.</span>
+</div>
+<div class="actions">
+	<div class="action-buttons">
+		<button mat-raised-button color="warn"
+			(click)="close('abstain')">
+			Abstain
+		</button>
+		<button mat-raised-button color="primary"
+			(click)="close('block')">
+			Block
+		</button>
+	</div>
+	<button mat-fab color="accent"
+		class="shop"
+		(click)="close('shop')">
+		<mat-icon>shopping_bag</mat-icon>
+	</button>
+</div>

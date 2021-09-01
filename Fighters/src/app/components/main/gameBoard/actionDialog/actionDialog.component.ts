@@ -10,6 +10,7 @@ export interface IActionData {
 	player: IPlayingPlayer;
 	game: IGame;
 	canAction: boolean;
+	openShopDirectly?: boolean;
 }
 
 @Component({
@@ -25,7 +26,11 @@ export class ActionDialogComponent {
 		@Inject(MAT_DIALOG_DATA) public actionData: IActionData,
 		public dialogRef: MatDialogRef<ActionDialogComponent>,
 		private dialog: MatDialog,
-	) {	}
+	) {
+		if (actionData.openShopDirectly) {
+			this.showShop = true;
+		}
+	}
 
 	public attack(): void {
 		this.dialogRef.close('attack');

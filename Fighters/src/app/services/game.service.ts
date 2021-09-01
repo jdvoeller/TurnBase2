@@ -74,7 +74,6 @@ export class GameService {
 		if (game.players.length < 2) {
 			allPlayers.push(this.createPlayingPlayerObj(updatedPlayer));
 			return this.db.collection(this.ENVIRONMENT).get().pipe(
-				tap((data) => console.log(data)),
 				map((data) => data.docs.filter((doc) => doc.data().id === id)[0]),
 				tap((data) => {
 					this.db.collection(this.ENVIRONMENT).doc(id).set({

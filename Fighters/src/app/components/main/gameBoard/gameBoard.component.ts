@@ -13,6 +13,9 @@ import { PlayerDialogComponent } from './playerDialog/playerDialog.component';
 import { StatsDialogComponent } from './statsDialog/statsDialog.component';
 import { ActionService } from 'src/app/services/action.service';
 import { YourTurnDialogComponent } from '../yourTurnDialog/yourTurnDialog.component';
+import { BlockingDialogComponent } from './blockingDialog/blockingDialog.component';
+import { Phase } from 'src/app/models/game/phases';
+import { isString } from 'util';
 
 @Component({
 	selector: 'game-board',
@@ -44,6 +47,7 @@ export class GameBoardComponent {
 		// 	gameId: this.game.id,
 		// };
 		// this.openActions();
+		// this.openBlockingDialog();
 
 		setInterval(() => {
 			if (this.game) {
@@ -151,7 +155,8 @@ export class GameBoardComponent {
 			}
 
 			if (this.gameStarted && this.dialog.openDialogs.length &&
-					!this.dialog.getDialogById('statsDialog') && !this.dialog.getDialogById('yourTurnDialog')) {
+					!this.dialog.getDialogById('statsDialog') && !this.dialog.getDialogById('yourTurnDialog') &&
+					!this.dialog.getDialogById('blocking')) {
 				this.dialog.open(YourTurnDialogComponent, {
 					id: 'yourTurnDialog',
 				}).afterClosed().subscribe((data) => {
@@ -159,6 +164,10 @@ export class GameBoardComponent {
 						this.dialog.closeAll();
 					}
 				});
+			}
+
+			if (game.phase === Phase.block && !this.dialog.getDialogById('blocking') && this.myTurn) {
+				this.openBlockingDialog();
 			}
 		});
 	}
@@ -169,13 +178,13 @@ export class GameBoardComponent {
 				player: this.myPlayer,
 				game: this.game,
 				canAction: this.myTurn,
-				id: 'actionDialog'
+				id: 'actionDialog',
 			},
 			width: '300px',
 		}).afterClosed().subscribe((data) => {
 			if (data) {
 				if (data === 'attack') {
-					this.actionService.attack(this.myPlayer, this.opponent, this.game, this.playerDetails);
+					this.actionService.initiateAttack(this.myPlayer, this.opponent, this.game, this.playerDetails);
 				} else if (data === 'coin') {
 					this.actionService.earnCoin(this.myPlayer, this.game, this.playerDetails);
 				} else {
@@ -187,6 +196,45 @@ export class GameBoardComponent {
 						this.actionService.buyItem(this.game, newItem, this.myPlayer.id);
 					}
 				}
+			}
+		});
+	}
+
+	private openBlockingDialog() {
+		this.dialog.open(BlockingDialogComponent, {
+			id: 'blocking',
+			disableClose: true,
+		}).afterClosed().subscribe((action: string) => {
+			switch (action) {
+				case 'abstain':
+					this.actionService.attack(this.opponent, this.myPlayer, this.game, this.playerDetails);
+					break;
+				case 'block':
+					this.actionService.attack(this.opponent, this.myPlayer, this.game, this.playerDetails, true);
+					break;
+				case 'shop':
+					this.dialog.open(ActionDialogComponent, {
+						data: {
+							player: this.myPlayer,
+							game: this.game,
+							canAction: false,
+							id: 'actionDialog',
+							openShopDirectly: true,
+						}
+					}).afterClosed().subscribe((data) => {
+						if (data !== undefined && !isString(data)) {
+							const newItem = (data as IItem);
+							if (newItem.name === ItemNames.healthPotion) {
+								this.actionService.healPlayer(newItem.health, newItem.cost, this.myPlayer, this.game, this.playerDetails);
+							} else {
+								this.actionService.buyItem(this.game, newItem, this.myPlayer.id);
+							}
+						}
+						this.openBlockingDialog();
+					});
+					break;
+				default:
+					break;
 			}
 		});
 	}

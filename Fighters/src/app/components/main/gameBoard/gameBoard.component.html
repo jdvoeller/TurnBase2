@@ -74,19 +74,16 @@
 		</ng-container>
 	</div>
 	
-	<mat-card>
+	<mat-card class="button-containers">
 		<button mat-raised-button
+			[disabled]="!game"
 			color="primary"
-			(click)="openActions()">Actions</button>
+			(click)="openActions(false)">Actions</button>
 		<button [disabled]="!game"
 			mat-mini-fab
 			color="primary"
 			(click)="openMessageDialog()">
 			<mat-icon>message</mat-icon>
 		</button>
-		<button mat-raised-button
-			color="primary"
-			[disabled]="true"
-			(click)="block()">Block</button>
 	</mat-card>
 </div>

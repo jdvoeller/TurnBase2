@@ -154,7 +154,7 @@ export class GameBoardComponent {
 				}
 			}
 
-			if (this.gameStarted && this.dialog.openDialogs.length &&
+			if (this.gameStarted && this.myTurn && this.dialog.openDialogs.length &&
 					!this.dialog.getDialogById('statsDialog') && !this.dialog.getDialogById('yourTurnDialog') &&
 					!this.dialog.getDialogById('blocking')) {
 				this.dialog.open(YourTurnDialogComponent, {
@@ -167,6 +167,7 @@ export class GameBoardComponent {
 			}
 
 			if (game.phase === Phase.block && !this.dialog.getDialogById('blocking') && this.myTurn) {
+				this.dialog.closeAll();
 				this.openBlockingDialog();
 			}
 		});

@@ -44,10 +44,12 @@ export class ActionService {
 	}
 
 	public attack(attackingPlayer: IPlayingPlayer, attackedPlayer: IPlayingPlayer, game: IGame, playerDetails: IPersonalPlayerDetails, blocking = false): void {
+		const BASE_BLOCK = 5;
+		let block = 0;
 		if (blocking) {
-			const BASE_BLOCK = 5;
+			block = BASE_BLOCK + this.rngService.roll(5);
 			attackedPlayer.blocking = true;
-			attackedPlayer.blockAmount = BASE_BLOCK + this.rngService.roll(10);
+			attackedPlayer.blockAmount = block;
 		}
 		const dealDamage: IDamageDetails = this.dealDamageAndUpdatedPlayers(attackingPlayer, attackedPlayer);
 		const updatedPlayers: IPlayingPlayer[] = dealDamage.players.map((player) => {
@@ -60,14 +62,14 @@ export class ActionService {
 		const updatedGame: IGame = {
 			...game,
 			players: updatedPlayers,
-			playerOneTurn: !game.playerOneTurn,
+			playerOneTurn: blocking ? !game.playerOneTurn : game.playerOneTurn,
 			gameOver: dealDamage.playerDead,
 			phase: Phase.attack
 		};
 
 		const deadPlayer = updatedGame.players.filter((player) => player.dead);
 		const message: string = deadPlayer.length ? `${attackedPlayer.player.name} took ${dealDamage.damageDealt} damage and died!!! SWEET VICTORY FOR ${attackingPlayer.player.name}!!` :
-			`${attackedPlayer.player.name} took ${dealDamage.damageDealt < 0 ? 0 : dealDamage.damageDealt} damage!`;
+			`${blocking ? attackedPlayer.player.name + ` blocked ${block} damage!` : ''}${attackedPlayer.player.name} took a total of ${dealDamage.damageDealt < 0 ? 0 : dealDamage.damageDealt} damage!`;
 
 		this.updateGame(updatedGame, true, message, playerDetails);
 	}

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { Collections, getCurrentEnvironment } from '../../environments/environment';
 import { IGame } from '../models/game/game';

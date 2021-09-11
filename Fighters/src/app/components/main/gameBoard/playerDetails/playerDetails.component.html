@@ -13,7 +13,7 @@
 			<mat-icon class="small-icon">info</mat-icon>
 		</button>
 	</div>
-	<span>{{ player.player.name }}</span>
+	<span [class.player-name]="myTurn">{{ player.player.name }}</span>
 	<mat-progress-bar [value]="player?.health" color="warn"></mat-progress-bar>
 	<div class="hp-text">
 		<span>HP: {{ player.health }}</span>

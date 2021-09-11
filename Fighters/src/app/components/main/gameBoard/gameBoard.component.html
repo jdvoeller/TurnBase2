@@ -29,17 +29,20 @@
 			<ng-container *ngIf="showOtherPlayersDetails; else noRights">
 				<player-details class="opponent-player"
 					[enemy]="true"
+					[myTurn]="!myTurn"
 					[player]="opponent"
 					[showOtherData]="true"></player-details>
 			</ng-container>
 			<ng-template #noRights>
 				<player-details class="opponent-player"
+					[myTurn]="!myTurn"
 					[enemy]="true"
 					[player]="opponent"></player-details>
 			</ng-template>
 			<h4>VS.</h4>
 			<player-details class="my-player"
 				[enemy]="false"
+				[myTurn]="myTurn"
 				[player]="myPlayer"
 				[showOtherData]="true"></player-details>
 		</div>

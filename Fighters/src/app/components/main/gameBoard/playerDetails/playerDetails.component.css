@@ -17,8 +17,30 @@ button {
 	transform: scale(.65);
 }
 
+mat-progress-bar {
+	margin-top: 4px;
+}
+
 .player-container {
 	display: flex;
 	align-items: center;
 	margin-bottom: 8px;
+}
+
+.player-name {
+	border-radius: 50px;
+	padding: 3px;
+	animation: flash 3s infinite;
+}
+
+@keyframes flash {
+	from {
+		color: black;
+		background-color: none;
+	}
+
+	to {
+		color: white;
+		background-color: #673ab7;
+	}
 }

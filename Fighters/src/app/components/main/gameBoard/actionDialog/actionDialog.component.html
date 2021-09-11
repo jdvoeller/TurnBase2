@@ -1,3 +1,10 @@
+<div *ngIf="actionData.player.player"
+	class="player-health">
+	<span>Health: {{ actionData.player.health }}</span>
+	<mat-progress-bar [value]="actionData.player?.health" color="warn"></mat-progress-bar>
+</div>
+	
+
 <div *ngIf="!showShop">
 	<h1 mat-dialog-title
 		class="center-text">Perform an Action</h1>

@@ -51,3 +51,8 @@
 .center-text {
 	text-align: center;
 }
+
+.player-health {
+	max-width: 70%;
+	margin-bottom: 12px;
+}

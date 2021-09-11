@@ -14,6 +14,7 @@ export class PlayerDetailsComponent {
 	@Input() public enemy: boolean;
 	@Input() public player: IPlayingPlayer;
 	@Input() public showOtherData = false;
+	@Input() public myTurn = false;
 	constructor(
 		private dialog: MatDialog,
 	) { }

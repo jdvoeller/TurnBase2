@@ -32,6 +32,7 @@ export class GameBoardComponent {
 	public playerDetails: IPersonalPlayerDetails;
 	public showStartGameButton = false;
 	public isLoading =  false;
+	public testGame = false;
 
 	public canShowYourTurnDialog = false;
 
@@ -41,17 +42,7 @@ export class GameBoardComponent {
 		private messageService: MessageService,
 		private actionService: ActionService,
 	) {
-		this.showStartDialog();
-
-		// TESTING ACTIONS
-		// this.game = MOCK_GAME_DATA;
-		// this.playerDetails = {
-		// 	player: this.game.players[0].player,
-		// 	player1: true,
-		// 	gameId: this.game.id,
-		// };
-		// this.openActions();
-		// this.openBlockingDialog();
+		this.startGame();
 
 		setInterval(() => {
 			if (this.game) {
@@ -266,5 +257,21 @@ export class GameBoardComponent {
 				playerDetails: this.playerDetails,
 			}
 		});
+	}
+
+	private startGame(): void {
+		if (this.testGame) {
+			// TESTING ACTIONS
+			this.game = MOCK_GAME_DATA;
+			this.playerDetails = {
+				player: this.game.players[0].player,
+				player1: true,
+				gameId: this.game.id,
+			};
+			this.openActions();
+			// this.openBlockingDialog();
+		} else {
+			this.showStartDialog();
+		}
 	}
 }

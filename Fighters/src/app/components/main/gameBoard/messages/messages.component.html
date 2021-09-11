@@ -1,0 +1,14 @@
+<div class="message-details"
+	id="message-details">
+	<ng-container *ngIf="messages">
+		<ng-container *ngFor="let message of messages">
+			<div class="date-container">
+				<span>{{ message.message }}</span>
+				<div class="mssg-info">
+					<span class="message-info">{{ message.sender }}</span>
+					<span class="message-info time">{{ message.time.toDate() | date:'shortTime' }}</span>
+				</div>
+			</div>
+		</ng-container>
+	</ng-container>
+</div>

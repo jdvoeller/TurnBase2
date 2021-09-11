@@ -25,6 +25,7 @@ import { YourTurnDialogComponent } from '../yourTurnDialog/yourTurnDialog.compon
 import { BlockingDialogModule } from './blockingDialog/blockingDialog.module';
 import { BlockingDialogComponent } from './blockingDialog/blockingDialog.component';
 import { IdService } from '../../../services/id.service';
+import { MessagesModule } from './messages/messages.module';
 
 @NgModule({
 	imports: [
@@ -42,6 +43,7 @@ import { IdService } from '../../../services/id.service';
 		ActionDialogModule,
 		YourTurnDialogModule,
 		BlockingDialogModule,
+		MessagesModule,
 	],
 	exports: [GameBoardComponent],
 	providers: [

@@ -4,3 +4,7 @@ export interface IMessage {
 	number: number;
 	sender: string;
 }
+
+export interface IFireBaseMessages {
+	messages: IMessage[];
+}

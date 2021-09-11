@@ -14,9 +14,6 @@ export interface IGame {
 
 	// Player
 	players: IPlayingPlayer[];
-
-	// Messages
-	messages: IMessage[];
 }
 
 export const MOCK_GAME_DATA: IGame = {
@@ -66,5 +63,4 @@ export const MOCK_GAME_DATA: IGame = {
 			items: []
 		},
 	],
-	messages: [],
 };

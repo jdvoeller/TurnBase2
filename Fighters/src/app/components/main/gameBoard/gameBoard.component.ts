@@ -11,11 +11,13 @@ import { IMessageData, MessageDialogComponent } from './messageDialog/messageDia
 import { IPhaseStepperData } from './phaseStepper/phaseStepper.component';
 import { PlayerDialogComponent } from './playerDialog/playerDialog.component';
 import { StatsDialogComponent } from './statsDialog/statsDialog.component';
-import { ActionService } from 'src/app/services/action.service';
+import { ActionService } from '../../../services/action.service';
 import { YourTurnDialogComponent } from '../yourTurnDialog/yourTurnDialog.component';
 import { BlockingDialogComponent } from './blockingDialog/blockingDialog.component';
-import { Phase } from 'src/app/models/game/phases';
+import { IFireBaseMessages, IMessage } from '../../../models/game/message';
+import { Phase } from '../../../models/game/phases';
 import { isString } from 'util';
+import { MessageService } from '../../../services/message.service';
 
 @Component({
 	selector: 'game-board',
@@ -26,6 +28,7 @@ import { isString } from 'util';
 export class GameBoardComponent {
 	public id: string;
 	public game: IGame;
+	public messages: IMessage[];
 	public playerDetails: IPersonalPlayerDetails;
 	public showStartGameButton = false;
 	public isLoading =  false;
@@ -35,6 +38,7 @@ export class GameBoardComponent {
 	constructor(
 		private dialog: MatDialog,
 		private gameService: GameService,
+		private messageService: MessageService,
 		private actionService: ActionService,
 	) {
 		this.showStartDialog();
@@ -137,6 +141,7 @@ export class GameBoardComponent {
 				this.showStartGameButton = false;
 				this.id = playerDetails.gameId;
 				this.listenToGame(this.id);
+				this.listenToMessages(this.id);
 			} else {
 				this.showStartGameButton = true;
 			}
@@ -170,6 +175,12 @@ export class GameBoardComponent {
 				this.dialog.closeAll();
 				this.openBlockingDialog();
 			}
+		});
+	}
+
+	public listenToMessages(id: string) {
+		this.messageService.listenToMessages(id).subscribe((data: IFireBaseMessages) => {
+			this.messages = data.messages;
 		});
 	}
 

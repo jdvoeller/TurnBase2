@@ -7,6 +7,8 @@ import { Collections, getCurrentEnvironment } from '../../environments/environme
 import { IGame } from '../models/game/game';
 import { Phase } from '../models/game/phases';
 import { IPersonalPlayerDetails, IPlayer, IPlayingPlayer } from '../models/player';
+import { IdService } from './id.service';
+import { MessageService } from './message.service';
 
 @Injectable()
 export class GameService {
@@ -15,7 +17,11 @@ export class GameService {
 
 	protected ENVIRONMENT = getCurrentEnvironment(Collections.games);
 
-	constructor(private db: AngularFirestore) { }
+	constructor(
+		private db: AngularFirestore,
+		private idService: IdService,
+		private messageService: MessageService,
+	) { }
 
 	//
 	// Game
@@ -25,7 +31,7 @@ export class GameService {
 	 * @param setupPlayer Basic player
 	 */
 	public setupGame(setupPlayer: IPlayer): Observable<IPersonalPlayerDetails> {
-		let newGameId = this.generateID(4);
+		let newGameId = this.idService.generateID(4);
 		// tslint:disable-next-line
 		let newGame: IGame = {
 			gameStarted: false,
@@ -33,19 +39,24 @@ export class GameService {
 			gameOver: false,
 			players: [this.createPlayingPlayerObj(setupPlayer)],
 			id: newGameId,
-			messages: [],
 			player1PickedStats: false,
 			phase: Phase.attack,
 		};
 
 		return this.db.collection(this.ENVIRONMENT).get().pipe(
 			tap((data) => {
+				// Check to see if gameId already exists.
+				// If so, add a character to the end of the newGameId until it's unique
 				while (data.docs.filter((doc) => doc.data().id === newGameId).length) {
-					newGameId = newGameId + this.generateID(1);
+					newGameId = newGameId + this.idService.generateID(1);
 					newGame.id = newGameId;
 				}
 
+				// Setup game document
 				this.db.collection(this.ENVIRONMENT).doc(newGameId).set(newGame);
+
+				// Setup message document
+				this.messageService.setUpMessageDocument(newGameId);
 			}),
 			map(() => {
 				const gameObj: IPersonalPlayerDetails = {
@@ -68,7 +79,7 @@ export class GameService {
 		const allPlayers: IPlayingPlayer[] = game.players;
 		const updatedPlayer: IPlayer = {
 			...details.player,
-			id: this.generateID(14),
+			id: this.idService.generateID(14),
 		};
 
 		if (game.players.length < 2) {
@@ -116,19 +127,8 @@ export class GameService {
 		return this.db.collection(this.ENVIRONMENT).doc(id).valueChanges();
 	}
 
-	private generateID(length: number): string {
-		let result = '';
-		const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		const characterLength = characters.length;
-		for (let i = 0; i < length; i++) {
-			result += characters.charAt(Math.floor(Math.random() * characterLength));
-		}
-
-		return result;
-	}
-
 	private createPlayingPlayerObj(player: IPlayer): IPlayingPlayer {
-		const newPlayerId: string = this.generateID(14);
+		const newPlayerId: string = this.idService.generateID(14);
 		return {
 			player: {
 				name: player.name,

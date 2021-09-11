@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatDialogModule, MatIconModule, MatInputModule } from '@angular/material';
+import { MessageService } from '../../../../services/message.service';
 import { GameService } from '../../../../services/game.service';
 
 import { MessageDialogComponent } from './messageDialog.component';
@@ -17,6 +18,6 @@ import { MessageDialogComponent } from './messageDialog.component';
 	],
 	exports: [MessageDialogComponent],
 	declarations: [MessageDialogComponent],
-	providers: [GameService],
+	providers: [MessageService],
 })
 export class MessageDialogModule { }

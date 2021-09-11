@@ -61,8 +61,8 @@
 <div class="bottom container">
 	<div class="message-details"
 		id="message-details">
-		<ng-container *ngIf="game?.messages">
-			<ng-container *ngFor="let message of game?.messages">
+		<ng-container *ngIf="messages">
+			<ng-container *ngFor="let message of messages">
 				<div class="date-container">
 					<span>{{ message.message }}</span>
 					<div class="mssg-info">

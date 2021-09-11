@@ -66,7 +66,6 @@ export class PlayerDialogComponent {
 					};
 
 					this.gameService.joinGame(game.id, game, joinDetails).subscribe((details: any) => {
-						console.log(details);
 						this.dialogRef.close(details);
 					});
 				} else {

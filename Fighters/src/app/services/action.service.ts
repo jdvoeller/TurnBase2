@@ -193,7 +193,7 @@ export class ActionService {
 
 		this.gameService.updateGame(updatedGame).then(() => {
 			if (message) {
-				this.messageService.sendMessage(message, updatedGame, myPlayerDetails);
+				this.messageService.sendMessage(message, updatedGame.id).subscribe();
 			}
 		});
 	}

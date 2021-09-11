@@ -2,8 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { IGame } from '../../../../models/game/game';
-import { GameService } from '../../../../services/game.service';
-import { IMessage } from '../../../../models/game/message';
+import { MessageService } from '../../../../services/message.service';
 
 export interface IMessageData {
 	game: IGame;
@@ -20,25 +19,14 @@ export class MessageDialogComponent {
 	public message: string;
 	constructor(
 		private dialogRef: MatDialogRef<MessageDialogComponent>,
-		private gameService: GameService,
+		private messageService: MessageService,
 		@Inject(MAT_DIALOG_DATA) public data: IMessageData,
 	) { }
 
 	public sendMessage() {
-		const newMessage: IMessage = {
-			message: this.message,
-			time: new Date(),
-			number: this.data.game.messages.length + 1,
-			sender: this.data.sender,
-		};
-		const updatedMessages: IMessage[] = this.data.game.messages;
-		updatedMessages.push(newMessage);
-
-		const updatedGame: IGame = {
-			...this.data.game,
-			messages: updatedMessages,
-		};
-		this.gameService.updateGame(updatedGame).then(() => this.dialogRef.close());
+		this.messageService.sendMessage(this.message, this.data.game.id, this.data.sender).subscribe(() => {
+			this.dialogRef.close();
+		});
 	}
 
 }

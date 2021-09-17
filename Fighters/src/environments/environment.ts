@@ -1,6 +1,7 @@
 export enum Collections {
 	message = 'message',
 	games = 'games',
+	users = 'users',
 }
 
 export const environment = {

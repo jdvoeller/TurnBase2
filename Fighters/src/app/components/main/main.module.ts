@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 
 import { MainComponent } from './main.component';
 import { NavBarModule } from './navBar/navBar.module';
-import { UserSettingsModule } from './userSettings/userSettings.module';
 import { MainRoutingModule } from './main.routing';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
 	imports: [
 		NavBarModule,
 
-		UserSettingsModule,
 		MainRoutingModule,
+		LoginModule,
 	],
 	exports: [MainComponent],
 	declarations: [MainComponent],

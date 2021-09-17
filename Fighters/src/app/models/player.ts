@@ -11,9 +11,6 @@ export interface IPlayer {
 	winTag: string;
 	lossTag: string;
 	id: string;
-	// profilePicURL: string;
-	// wins: number;
-	// losses: number;
 }
 
 export interface IPlayingPlayer {

@@ -27,10 +27,6 @@ export class UserSettingsComponent {
 		this.userSettingsFormGroup = this.setForm();
 	}
 
-	public save() {
-		
-	}
-
 	private setForm(): FormGroup {
 		return this.fb.group({
 			displayName: ['', Validators.required],

@@ -32,7 +32,7 @@ export class GameBoardComponent {
 	public playerDetails: IPersonalPlayerDetails;
 	public showStartGameButton = false;
 	public isLoading =  false;
-	public testGame = false;
+	public testGame = true;
 
 	public canShowYourTurnDialog = false;
 

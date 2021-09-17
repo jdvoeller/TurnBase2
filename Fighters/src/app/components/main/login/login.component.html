@@ -1,0 +1,59 @@
+<div class="login-card-container">
+	<mat-card>
+		<mat-card-header>
+			<mat-card-title *ngIf="loginForm">Login</mat-card-title>
+			<mat-card-title *ngIf="!loginForm">Register</mat-card-title>
+		</mat-card-header>
+	
+		<mat-card-content>
+			<form [formGroup]="form">
+				<mat-form-field>
+					<mat-label>Email</mat-label>
+					<input matInput
+						required
+						type="email"
+						formControlName="email">
+					<mat-error *ngIf="form.get('email').errors?.required">Required</mat-error>
+					<mat-error *ngIf="form.get('email').errors?.email">Email not valid</mat-error>
+				</mat-form-field>
+				<mat-form-field class="password-container">
+					<mat-label>Password</mat-label>
+					<input matInput
+						id="password"
+						required
+						type="password"
+						formControlName="password">
+						<mat-icon *ngIf="!visiblePassword"
+							(click)="toggleVisibility()">visibility</mat-icon>
+						<mat-icon *ngIf="visiblePassword"
+							(click)="toggleVisibility()">visibility_off</mat-icon>
+					<mat-error>Required</mat-error>
+				</mat-form-field>
+				<mat-form-field *ngIf="!!form?.get('passwordConfirmation')">
+					<mat-label>Confirm Password</mat-label>
+					<input matInput
+						required
+						id="passwordConfirmation"
+						type="password"
+						formControlName="passwordConfirmation">
+					<mat-error *ngIf="form.get('passwordConfirmation').hasError('required')">Required</mat-error>
+				</mat-form-field>
+				<span class="password-error" *ngIf="!passwordsMatch">Passwords do not match</span>
+			</form>
+		</mat-card-content>
+		<mat-card-actions align='end'>
+			<button mat-button color="warn"
+				(click)="restoreForm()"
+				[disabled]="disableCancel">Cancel</button>
+			<button mat-raised-button color="primary"
+				(click)="submit()"
+				[disabled]="disableSubmit">Submit</button>
+		</mat-card-actions>
+		<span *ngIf="loginForm"
+			(click)="toggleForm()"
+			class="create-or-login">Create Account?</span>
+		<span *ngIf="!loginForm"
+			(click)="toggleForm()"
+			class="create-or-login">Login?</span>
+	</mat-card>
+</div>

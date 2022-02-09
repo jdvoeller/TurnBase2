@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -12,10 +13,12 @@ export class LoginComponent {
 	public loginForm = true;
 	public passwordsMatch = true;
 	public visiblePassword = false;
+	public loginError: string;
 
 	constructor(
 		private fb: FormBuilder,
 		private authService: AuthService,
+		private router: Router,
 	) {
 		this.setNewFormGroup();
 	}
@@ -44,16 +47,17 @@ export class LoginComponent {
 	}
 
 	public toggleForm(): void {
-		this.loginForm = !this.loginForm;
 		if (this.loginForm) {
 			this.form.removeControl('passwordConfirmation');
 		} else {
 			this.addPasswordConfirmationControl();
 		}
+		this.loginForm = !this.loginForm;
 		this.restoreForm();
 	}
 
 	public submit(): void {
+		this.loginError = '';
 		if (this.form.valid) {
 			if (!this.loginForm && this.form.get('password').value !== this.form.get('passwordConfirmation').value) {
 				this.passwordsMatch = false;
@@ -61,19 +65,29 @@ export class LoginComponent {
 				this.authService.login({
 					email: this.form.get('email').value,
 					password: this.form.get('password').value,
-				});
+				}).then((data) => this.router.navigateByUrl('testGame')).catch((e) => this.setLoginError(e));
 			} else {
+				this.authService.signUp({
+					email: this.form.get('email').value,
+					password: this.form.get('password').value,
+				}).then((value) => {
+					if (value.message) {
+						this.setLoginError(value.message);
+					} else {
+						this.authService.createNewUserObject(value.user.email, value.user.uid).then(() => this.router.navigateByUrl('testGame'));
+					}
+				});
 			}
 		}
 	}
 
 	public restoreForm(): void {
-		console.log(this.form.get('email'));
 		this.setNewFormGroup();
 		this.form.markAsPristine();
 		this.form.markAsUntouched();
 		this.passwordsMatch = true;
 		this.visiblePassword = false;
+		this.loginError = '';
 		(<HTMLInputElement>document.getElementById('password')).type = 'password';
 
 		if (!this.loginForm) {
@@ -81,10 +95,21 @@ export class LoginComponent {
 		}
 	}
 
+	private setLoginError(error: any): void {
+		console.log(error);
+		this.loginError = error;
+	}
+
 	private setNewFormGroup(): void {
 		this.form = this.fb.group({
-			email: ['', [Validators.required, Validators.email]],
-			password: ['', Validators.required],
+			email: ['', [
+				Validators.required,
+				Validators.email,
+			]],
+			password: ['', [
+				Validators.required,
+				Validators.minLength(6),
+			]],
 		});
 
 		if (!this.loginForm) {

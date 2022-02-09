@@ -90,7 +90,7 @@ export class GameService {
 					this.db.collection(this.ENVIRONMENT).doc(id).set({
 						...data.data(),
 						players: allPlayers,
-					}).catch((err) => console.log(err));
+					}).catch((err) => window.alert(err));
 				}),
 				map(() => {
 					const playerObj: IPersonalPlayerDetails = {

@@ -49,3 +49,12 @@ form {
 .password-container ::ng-deep .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
 	display: flex;
 }
+
+.password-error-container {
+	text-align: center;
+}
+
+.password-error-container span {
+	color: red;
+	font-size: 12px;
+}

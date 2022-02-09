@@ -27,7 +27,8 @@
 							(click)="toggleVisibility()">visibility</mat-icon>
 						<mat-icon *ngIf="visiblePassword"
 							(click)="toggleVisibility()">visibility_off</mat-icon>
-					<mat-error>Required</mat-error>
+					<mat-error *ngIf="form.get('password').errors?.required">Required</mat-error>
+					<mat-error *ngIf="form.get('password').errors?.minlength">Must be at least 6 characters</mat-error>
 				</mat-form-field>
 				<mat-form-field *ngIf="!!form?.get('passwordConfirmation')">
 					<mat-label>Confirm Password</mat-label>
@@ -41,6 +42,10 @@
 				<span class="password-error" *ngIf="!passwordsMatch">Passwords do not match</span>
 			</form>
 		</mat-card-content>
+		<div *ngIf="loginError"
+			class="password-error-container">
+			<span>{{loginError}}</span>
+		</div>
 		<mat-card-actions align='end'>
 			<button mat-button color="warn"
 				(click)="restoreForm()"
